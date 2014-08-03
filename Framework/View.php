@@ -55,7 +55,7 @@ class View {
     public function render($variables = null, $layout = null, $return = false) {
 
         if (empty($layout) && empty($this->layout)) {
-            die('View layout is not set, use: $this->view->setLayoutFile("Layout");');
+            Util::notFoundMessage('View layout is not set, use: $this->view->setLayoutFile("Layout");');
         }
 
         $layout = empty($layout) ? $this->layout : Util::prepairFileName($layout, 'View');
@@ -67,7 +67,7 @@ class View {
 
         $fileNameAndPath = \Util::getPhpFilePath($layout, APPLICATION_VIEW);
         if (!file_exists($fileNameAndPath)) {
-            die('View file not found in ' . $fileNameAndPath);
+            Util::notFoundMessage('View file not found in ' . $fileNameAndPath);
         }
 
         if (!in_array($layout, $this->loadedViews)) {

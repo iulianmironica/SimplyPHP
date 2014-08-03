@@ -19,18 +19,33 @@ class FrameworkSettings {
     // View settings
     const VIEW_LAYOUT_FILE = 'Layout';
 
-    // TODO:
-    // Classes that will be loaded automatically
-    public static $autoload = array(
-        // DB is loaded in the Model
-        // 'Database',
-        'Input',
-        'Helper',
-        'ApplicationSettings',
-        'ProductModel',
-    );
+    public static $autoload = [
+        'settings' => [
+        // Pass true to instantiate
+        // 'ApplicationSettings' => true
+        ],
+        'modules' => [
+            'Input' => true,
+            'Database',
+            'Session',
+        ],
+        'library' => [
+            'Helper',
+            'Constants' => true,
+        ],
+        'model' => [
+            'ProductModel',
+        ],
+    ];
+    // Logger settings
+    public static $logger = [
+        'start' => true, // boolean
+        'level' => 'error', // info, debug, error
+        'file' => 'logger.txt', // default file name
+        'timestamp' => 'm-d-Y G:i:s' // leave blank for none
+    ];
 
     // SimplyPHP Framework version
-    const version = '1.0';
+    const version = '0.1';
 
 }

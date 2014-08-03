@@ -7,18 +7,18 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="description" content="">
         <meta name="author" content="Iulian Mironica">
-        <link rel="shortcut icon" href="<?= Util::baseUrl('/public/image/favicon.png') ?>">
+        <link rel="shortcut icon" href="<?= Util::baseUrl('/image/favicon.png') ?>">
 
         <title>SimplyPHP Framework Demo</title>
 
         <!-- Bootstrap core CSS -->
-        <link href="<?= Util::baseUrl('/public/css/bootstrap/bootstrap.css') ?>" rel="stylesheet">
+        <link href="<?= Util::baseUrl('/css/bootstrap/bootstrap.css') ?>" rel="stylesheet">
 
         <!-- Custom styles for this template -->
-        <link href="<?= Util::baseUrl('/public/css/bootstrap/dashboard.css') ?>" rel="stylesheet">
-        <link href="<?= Util::baseUrl('/public/css/style.css') ?>" rel="stylesheet">
+        <link href="<?= Util::baseUrl('/css/bootstrap/dashboard.css') ?>" rel="stylesheet">
+        <link href="<?= Util::baseUrl('/css/style.css') ?>" rel="stylesheet">
         <!-- Typeahead plugin -->
-        <link href="<?= Util::baseUrl('/public/css/typeahead/typeahead.css') ?>" rel="stylesheet">
+        <link href="<?= Util::baseUrl('/css/typeahead/typeahead.css') ?>" rel="stylesheet">
 
         <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
         <!--[if lt IE 9]>
@@ -30,7 +30,7 @@
 
     <body>
         <div id="loader" style="display: none;">
-            <img src="<?= Util::baseUrl('/public/image/loader.gif') ?>">
+            <img src="<?= Util::baseUrl('/image/loader.gif') ?>">
         </div>
 
         <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
@@ -62,7 +62,7 @@
                 <div class="col-sm-3 col-md-2 sidebar">
                     <ul class="nav nav-sidebar">
                         <li class="<?= $this->controller === 'MainController' && $this->action === 'index' ? 'active' : '' ?>"><a href="<?= Util::baseUrl() ?>">Products</a></li>
-                        <li class="<?= $this->controller === 'MainController' && $this->action === 'about' ? 'active' : '' ?>"><a href="<?= Util::baseUrl('/main/about') ?>">About SimplyPHP</a></li>
+                        <li class="<?= $this->controller === 'MainController' && $this->action === 'about' ? 'active' : '' ?>"><a href="<?= Util::baseUrl('/main/about') ?>">Documentation</a></li>
                         <li class="nav-divider"></li>
                     </ul>
                     <table class="table table-striped" id="basket-nav-table" style="margin-bottom: 0">
@@ -181,12 +181,12 @@
         <!-- Bootstrap core JavaScript
         ================================================== -->
         <!-- Placed at the end of the document so the pages load faster -->
-        <script src="<?= Util::baseUrl('/public/javascript/jquery-1.11.1.min.js') ?>"></script>
-        <script src="<?= Util::baseUrl('/public/javascript/bootstrap/bootstrap.min.js') ?>"></script>
-        <script src="<?= Util::baseUrl('/public/javascript/bootstrap/docs.min.js') ?>"></script>
+        <script src="<?= Util::baseUrl('/javascript/jquery-1.11.1.min.js') ?>"></script>
+        <script src="<?= Util::baseUrl('/javascript/bootstrap/bootstrap.min.js') ?>"></script>
+        <script src="<?= Util::baseUrl('/javascript/bootstrap/docs.min.js') ?>"></script>
         <!--Typeahead plugin-->
-        <script src="<?= Util::baseUrl('/public/javascript/typeahead/handlebars.js') ?>"></script>
-        <script src="<?= Util::baseUrl('/public/javascript/typeahead/typeahead.bundle.js') ?>"></script>
+        <script src="<?= Util::baseUrl('/javascript/typeahead/handlebars.js') ?>"></script>
+        <script src="<?= Util::baseUrl('/javascript/typeahead/typeahead.bundle.js') ?>"></script>
 
         <script>
             var baseUrl = '<?= Util::baseUrl() ?>';
@@ -194,7 +194,7 @@
 
         <!-- Custom Javascript
         ====================== -->
-        <script src="<?= Util::baseUrl('/public/javascript/custom/util.js') ?>"></script>
-        <script src="<?= Util::baseUrl('/public/javascript/custom/script.js') ?>"></script>
+        <script src="<?= Util::baseUrl('/javascript/custom/util.js') ?>"></script>
+        <script src="<?= Util::baseUrl('/javascript/custom/script.js') ?>"></script>
     </body>
 </html>

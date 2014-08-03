@@ -18,7 +18,7 @@ class Util {
         $pathToClass = PATH . DS . $location . $className . '.php';
 
         if (!file_exists($pathToClass)) {
-            die("404 File {$pathToClass} was not found.");
+            Util::notFoundMessage("404 File {$pathToClass} was not found.");
         }
         if (!class_exists($className)) {
             require_once $pathToClass;
@@ -34,7 +34,6 @@ class Util {
     }
 
     /** Get the absolute file path of a file.
-     *
      * @param string $file
      * @param string $location
      * @param string $extension
@@ -63,6 +62,56 @@ class Util {
      */
     public static function prepairFileName($fileName, $concatenation = false) {
         return ucfirst(strtolower(trim($fileName))) . $concatenation ? : $concatenation;
+    }
+
+    /** Load all the classes specified in the framework settings config file.
+     *
+     * @param type $configurationArray
+     */
+    public static function autoloadConfigModules($configurationArray) {
+        // var_dump($configurationArray);
+        // exit();
+
+        foreach ($configurationArray as $module => $classes) {
+            switch (strtolower($module)) {
+                case 'settings':
+                    self::loadClasses($classes, APPLICATION_SETTINGS);
+                    break;
+                case 'modules':
+                    self::loadClasses($classes, FRAMEWORKPATH);
+                    break;
+                case 'library':
+                    self::loadClasses($classes, APPLICATION_LIBRARY);
+                    break;
+                case 'model':
+                    self::loadClasses($classes, APPLICATION_MODEL);
+                    break;
+                default:
+                    break;
+            }
+        }
+    }
+
+    /**
+     * @param type $classes
+     * @param type $location
+     */
+    public static function loadClasses($classes, $location) {
+        foreach ($classes as $class => $instantiate) {
+            if (is_int($class)) {
+                self::loadClass($instantiate, $location);
+            } else {
+                self::loadClass($class, $location, $instantiate ? true : false);
+            }
+        }
+    }
+
+    public static function error($message) {
+        die($message);
+    }
+
+    public static function notFoundMessage($message) {
+        die($message);
     }
 
 }

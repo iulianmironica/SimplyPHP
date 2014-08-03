@@ -1,0 +1,14 @@
+{
+    "name": "simplyphp/simplyphp",
+    "description": "SimplyPHP Framework",
+    "keywords": ["framework", "simplyPHP"],
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Iulian Mironica"
+        }
+    ],
+    "require": {
+        "php": ">=5.4"
+    }
+}

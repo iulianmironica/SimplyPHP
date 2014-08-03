@@ -19,7 +19,9 @@ class Database {
                 ));
                 self::$resource->setAttribute(\PDO::ATTR_DEFAULT_FETCH_MODE, \PDO::FETCH_OBJ);
             } catch (Exception $e) {
-                var_dump($e);
+                $logger = new Logger();
+                $logger->error($e);
+                Util::error('Database error ocurred. Please check the credentials and/or the connection.');
             }
             return self::$resource;
         } else {

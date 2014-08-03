@@ -7,8 +7,8 @@
  */
 class ServiceController extends Controller {
 
-    private static $responseSuccess = array('status' => 'success');
-    private static $responseError = array('status' => 'error');
+    private static $responseSuccess = ['status' => 'success'];
+    private static $responseError = ['status' => 'error'];
 
     public function __construct($params) {
         parent::__construct($params);
@@ -17,7 +17,6 @@ class ServiceController extends Controller {
         Util::loadClass('ProductModel', APPLICATION_MODEL);
 
         // Load the needed classes
-        Util::loadClass('ApplicationSettings', APPLICATION_SETTINGS, true);
         Util::loadClass('Helper', APPLICATION_LIBRARY);
         // Input helper
         Util::loadClass('Input', FRAMEWORKPATH, true);
