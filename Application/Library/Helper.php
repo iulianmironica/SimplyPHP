@@ -1,14 +1,18 @@
 <?php
 
+namespace Application\Library;
+
 /**
  * @author Iulian Mironica
  */
-class Helper {
+class Helper
+{
 
     /**
      * @return boolean
      */
-    public static function raiseTimeAndMemoryLimits($seconds = 20, $memory = '128') {
+    public static function raiseTimeAndMemoryLimits($seconds = 20, $memory = '128')
+    {
         try {
             // Raise memory limit
             ini_set('memory_limit', "{$memory}M");

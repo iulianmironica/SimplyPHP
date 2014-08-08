@@ -1,36 +1,44 @@
 <?php
 
+namespace Framework;
+
+use Application\Settings\Config;
+use Framework\Utility;
+
 /**
  * Description of Router
  *
  * @author Iulian Mironica
  */
-class Router {
+class Router
+{
 
     public $controller;
     public $action;
     public $query;
     public $uri;
 
-    public function __construct() {
+    public function __construct()
+    {
         // $this->uri = $this->uri = filter_input(INPUT_SERVER, 'QUERY_STRING', FILTER_SANITIZE_STRING)?: '';
         $this->uri = $this->uri = filter_input(INPUT_SERVER, 'REQUEST_URI');
     }
 
-    public function setUriParts() {
+    public function setUriParts()
+    {
 
         $parts = $this->uriExtractParts();
 
         if (isset($parts[0]) AND ! empty(trim($parts[0]))) {
-            $this->controller = Util::prepairFileName($parts[0], 'Controller');
+            $this->controller = Utility::prepairFileName($parts[0], 'Controller');
         } else {
-            $this->controller = Util::prepairFileName(FrameworkSettings::DEFAULT_CONTROLLER, 'Controller');
+            $this->controller = Utility::prepairFileName(Config::DEFAULT_CONTROLLER, 'Controller');
         }
 
         if (isset($parts[1]) AND ! empty(trim($parts[1]))) {
             $this->action = strtolower($parts[1]);
         } else {
-            $this->action = strtolower(FrameworkSettings::DEFAULT_ACTION);
+            $this->action = strtolower(Config::DEFAULT_ACTION);
         }
 
         if (isset($parts[2]) AND ! empty($parts[2])) {
@@ -38,7 +46,8 @@ class Router {
         }
     }
 
-    public function uriExtractParts() {
+    public function uriExtractParts()
+    {
         // Also extract the get params
         $uriParts = explode(chr(1), str_replace(array('/', '?'), chr(1), $this->uri));
         // Remove the empty values
@@ -46,12 +55,14 @@ class Router {
         return array_values($keysPreserved);
     }
 
-    public function getUriSegment($segmentNumber) {
+    public function getUriSegment($segmentNumber)
+    {
         $parts = $this->uriExtractParts();
         return isset($parts[$segmentNumber]) ? $parts[$segmentNumber] : '';
     }
 
-    public function getRequest() {
+    public function getRequest()
+    {
         return filter_input(INPUT_SERVER, 'REQUEST_METHOD');
     }
 

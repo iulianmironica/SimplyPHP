@@ -1,5 +1,9 @@
 <?php
 
+namespace Application\Model;
+
+use Framework\Model;
+
 /**
  * Description of ProductModel
  *

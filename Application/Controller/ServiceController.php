@@ -1,31 +1,34 @@
 <?php
 
+namespace Application\Controller;
+
+use Framework\Controller;
+use Application\Library\Helper;
+use Framework\Input;
+
 /**
  * Description of ServiceController
  *
  * @author Iulian Mironica
  */
-class ServiceController extends Controller {
+class ServiceController extends Controller
+{
 
     private static $responseSuccess = ['status' => 'success'];
     private static $responseError = ['status' => 'error'];
 
-    public function __construct($params) {
+    public function __construct($params)
+    {
         parent::__construct($params);
 
-        // Load the model
-        Util::loadClass('ProductModel', APPLICATION_MODEL);
-
-        // Load the needed classes
-        Util::loadClass('Helper', APPLICATION_LIBRARY);
-        // Input helper
-        Util::loadClass('Input', FRAMEWORKPATH, true);
-
+        require_once PATH . DS . FRAMEWORKPATH . 'Input.php';
+        require_once PATH . DS . APPLICATION_LIBRARY . 'Helper.php';
         // Raise script time and memory limits
         Helper::raiseTimeAndMemoryLimits();
     }
 
-    public function index() {
+    public function index()
+    {
         if ($this->router->getRequest() === 'GET') {
 
             $start = microtime(true);
@@ -33,7 +36,8 @@ class ServiceController extends Controller {
         }
     }
 
-    public function save() {
+    public function save()
+    {
         if ($this->router->getRequest() === 'GET') {
 
             $basket = is_null($this->session->basket) ? array() : $this->session->basket;
@@ -50,7 +54,8 @@ class ServiceController extends Controller {
         }
     }
 
-    public function remove() {
+    public function remove()
+    {
         if ($this->router->getRequest() === 'POST') {
             $basket = is_null($this->session->basket) ? array() : $this->session->basket;
             unset($basket[Input::post('productId')]);
@@ -60,7 +65,8 @@ class ServiceController extends Controller {
         }
     }
 
-    public function clear() {
+    public function clear()
+    {
         if ($this->router->getRequest() === 'POST') {
             // Clear the basket
             $this->session->basket = null;
@@ -68,7 +74,8 @@ class ServiceController extends Controller {
         }
     }
 
-    public function autocomplete() {
+    public function autocomplete()
+    {
         $productModel = new ProductModel();
         $query = filter_input(INPUT_GET, 'query', FILTER_SANITIZE_STRING);
         $limit = filter_input(INPUT_GET, 'limit', FILTER_SANITIZE_NUMBER_INT);

@@ -1,11 +1,14 @@
 <?php
 
+namespace Application\Settings;
+
 /**
  * Description of FrameworkSettings
  *
  * @author Iulian Mironica
  */
-class FrameworkSettings {
+class Config
+{
 
     // Router settings
     const DEFAULT_CONTROLLER = 'main';
@@ -25,13 +28,13 @@ class FrameworkSettings {
         // 'ApplicationSettings' => true
         ],
         'modules' => [
-            'Input' => true,
+//            'Input' => true,
             'Database',
             'Session',
         ],
         'library' => [
             'Helper',
-            'Constants' => true,
+//            'Constants' => true,
         ],
         'model' => [
             'ProductModel',

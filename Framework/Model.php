@@ -1,18 +1,26 @@
 <?php
 
+namespace Framework;
+
+use Framework\Database;
+use Framework\Loader;
+
 /**
  * Description of Model
  *
  * @author Iulian Mironica
  */
-class Model {
+class Model
+{
 
     public $db;
     public $tableName;
 
-    public function __construct() {
+    public function __construct()
+    {
         // Load the dependent class
-        Util::loadClass('Database', FRAMEWORKPATH);
+        //Loader::loadClass('Database', FRAMEWORKPATH);
+        require_once PATH . DS . FRAMEWORKPATH . 'Database.php';
         $this->db = Database::init();
         $this->db->setAttribute(\PDO::ATTR_DEFAULT_FETCH_MODE, \PDO::FETCH_OBJ);
     }
@@ -25,8 +33,8 @@ class Model {
      * @param type $orderBy
      * @return type
      */
-    public function getById($id, $tableName, $idColumnName = 'id', $columns = null, $orderBy = null) {
-
+    public function getById($id, $tableName, $idColumnName = 'id', $columns = null, $orderBy = null)
+    {
 
         if (is_array($columns)) {
             $columns = implode(',', $columns);
@@ -54,8 +62,8 @@ class Model {
      * @param type $limit
      * @return type
      */
-    public function getAll($tableName, $columns = null, $orderBy = null, $limit = 100) {
-
+    public function getAll($tableName, $columns = null, $orderBy = null, $limit = 100)
+    {
         if (is_array($columns)) {
             $columns = implode(',', $columns);
         } else {
@@ -83,7 +91,8 @@ class Model {
      * @param type $fetchMode PDO::FETCH_ASSOC
      * @return null
      */
-    public function query($sql, $parameters = null, $fetchMode = PDO::FETCH_ASSOC) {
+    public function query($sql, $parameters = null, $fetchMode = PDO::FETCH_ASSOC)
+    {
         try {
             $stmt = $this->db->prepare($sql);
             $stmt->execute($parameters ? : $parameters);
@@ -94,7 +103,7 @@ class Model {
 
             return $stmt->fetchAll($fetchMode);
         } catch (Exception $e) {
-            var_dump($e);
+            Util::showError($e);
             return null;
         }
     }
