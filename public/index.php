@@ -6,8 +6,8 @@ $applicationPath = 'Application';
 define('DS', DIRECTORY_SEPARATOR);
 define('ENVIRONMENT', 'development');
 
-define('PATH', realpath(dirname(dirname(__FILE__))));
-define('FRAMEWORKPATH', str_replace("\\", DS, $frameworkPath) . DS);
+define('PATH', realpath(dirname(dirname(__FILE__))) . DS);
+define('FRAMEWORK_PATH', str_replace("\\", DS, $frameworkPath) . DS);
 define('APPLICATION_PATH', str_replace("\\", DS, $applicationPath) . DS);
 define('APPLICATION_SETTINGS', str_replace("\\", DS, "{$applicationPath}\Settings") . DS);
 

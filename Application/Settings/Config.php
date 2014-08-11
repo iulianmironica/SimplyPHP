@@ -22,28 +22,11 @@ class Config
     // View settings
     const VIEW_LAYOUT_FILE = 'Layout';
 
-    public static $autoload = [
-        'settings' => [
-        // Pass true to instantiate
-        // 'ApplicationSettings' => true
-        ],
-        'modules' => [
-//            'Input' => true,
-            'Database',
-            'Session',
-        ],
-        'library' => [
-            'Helper',
-//            'Constants' => true,
-        ],
-        'model' => [
-            'ProductModel',
-        ],
-    ];
     // Logger settings
     public static $logger = [
         'start' => true, // boolean
         'level' => 'error', // info, debug, error
+        // 'path' => PATH . DS . APPLICATION_LOG, ---- TODO
         'file' => 'logger.txt', // default file name
         'timestamp' => 'm-d-Y G:i:s' // leave blank for none
     ];

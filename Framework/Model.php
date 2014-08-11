@@ -18,9 +18,6 @@ class Model
 
     public function __construct()
     {
-        // Load the dependent class
-        //Loader::loadClass('Database', FRAMEWORKPATH);
-        require_once PATH . DS . FRAMEWORKPATH . 'Database.php';
         $this->db = Database::init();
         $this->db->setAttribute(\PDO::ATTR_DEFAULT_FETCH_MODE, \PDO::FETCH_OBJ);
     }

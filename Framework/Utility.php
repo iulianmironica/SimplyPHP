@@ -20,7 +20,7 @@ class Utility
     {
         // return PATH . DS . $location . ucfirst(strtolower(trim($file))) . $extension;
         // $moduleName = array_pop(@explode("\\", $location, -1));
-        return PATH . DS . $location . self::prepairFileName($file, '') . $extension;
+        return PATH . $location . self::prepairFileName($file, '') . $extension;
     }
 
     /**
@@ -29,7 +29,6 @@ class Utility
      */
     public static function baseUrl($url = null)
     {
-        // return empty($url) ? BASE_URL : BASE_URL . $url;
         return \Application\Settings\Config::ROUTER_SCHEME . BASE_URL . ($url ? : $url);
     }
 

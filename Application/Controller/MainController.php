@@ -2,7 +2,8 @@
 
 namespace Application\Controller;
 
-use Framework\Logger;
+//use Framework\Logger;
+use Application\Library\KLogger\Logger;
 use Framework\Controller;
 use Application\Model\ProductModel;
 
@@ -16,7 +17,6 @@ class MainController extends Controller
 
     function __construct($params)
     {
-        require_once PATH . DS . APPLICATION_MODEL . 'ProductModel.php';
         parent::__construct($params);
 
         // A view file can also be set in the constructor
@@ -43,8 +43,9 @@ class MainController extends Controller
 
     public function log()
     {
-        $logger = new Logger();
-        $logger->error(array('ok' => 'Testing'));
+        $logger = new Logger(PATH . APPLICATION_LOG);
+        $logger->debug(array('ok' => 'ok'));
+        $logger->log('Thats a text', array('ok' => 'ok'));
     }
 
 }

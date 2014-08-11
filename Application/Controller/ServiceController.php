@@ -21,8 +21,6 @@ class ServiceController extends Controller
     {
         parent::__construct($params);
 
-        require_once PATH . DS . FRAMEWORKPATH . 'Input.php';
-        require_once PATH . DS . APPLICATION_LIBRARY . 'Helper.php';
         // Raise script time and memory limits
         Helper::raiseTimeAndMemoryLimits();
     }
