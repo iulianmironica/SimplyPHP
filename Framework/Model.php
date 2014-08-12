@@ -3,7 +3,6 @@
 namespace Framework;
 
 use Framework\Database;
-use Framework\Loader;
 
 /**
  * Description of Model

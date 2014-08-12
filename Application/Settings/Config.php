@@ -25,13 +25,12 @@ class Config
     // Logger settings
     public static $logger = [
         'start' => true, // boolean
-        'level' => 'error', // info, debug, error
-        // 'path' => PATH . DS . APPLICATION_LOG, ---- TODO
+        'level' => 'debug', // emergency, alert, critical, error, warning, notice, info, debug
         'file' => 'logger.txt', // default file name
         'timestamp' => 'm-d-Y G:i:s' // leave blank for none
     ];
 
     // SimplyPHP Framework version
-    const version = '0.1';
+    const version = '0.2';
 
 }

@@ -122,7 +122,7 @@ class Autoloader
      */
     public function loadClass($class)
     {
-        var_dump("I'm looking for this class: $class");
+        print (" $class <br>");
 
         // the current namespace prefix
         $prefix = $class;

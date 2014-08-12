@@ -2,7 +2,7 @@
 
 namespace Framework;
 
-require PATH . DS . FRAMEWORK_PATH . 'Autoloader.php';
+require PATH . FRAMEWORK_PATH . 'Autoloader.php';
 
 // Initialize the autoloader and set the namespaces of the project
 $autoloader = new Autoloader();
@@ -11,14 +11,20 @@ $autoloader->addNamespace('Framework', '/Framework');
 $autoloader->addNamespace('Application\Controller', '/Application/Controller');
 $autoloader->addNamespace('Application\Model', '/Application/Model');
 $autoloader->addNamespace('Application\Settings', 'Application/Settings');
+$autoloader->addNamespace('Application\Library', 'Application/Library');
 $autoloader->register();
 
-// Load the logger if specified - PUT THE LOGGER ON THE SESSION
-//if (isset(\Application\Settings\Config::$logger['start']) && \Application\Settings\Config::$logger['start'] === true) {
-//    new \Framework\Logger();
-//}
 // Load and start the Session
 $session = new \Framework\Session();
+
+// TODO: Create a Dispatcher / preDispatch method to be called before initialization of the controller
+// --------------------------------------------------------------------------------------
+// Load the logger if specified
+if (isset(\Application\Settings\Config::$logger['start']) && \Application\Settings\Config::$logger['start'] === true) {
+    $session->logger = new \Application\Library\KLogger\Logger(PATH . APPLICATION_LOG, \Application\Settings\Config::$logger['level']);
+} else {
+    $session->logger = new \Application\Library\KLogger\Logger(PATH . APPLICATION_LOG, \Application\Library\KLogger\Logger::ALERT);
+}
 
 // Load and the Router and prepair the URI
 $router = new \Framework\Router();

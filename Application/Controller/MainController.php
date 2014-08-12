@@ -2,7 +2,6 @@
 
 namespace Application\Controller;
 
-//use Framework\Logger;
 use Application\Library\KLogger\Logger;
 use Framework\Controller;
 use Application\Model\ProductModel;
@@ -15,9 +14,15 @@ use Application\Model\ProductModel;
 class MainController extends Controller
 {
 
+    private static $logger;
+
     function __construct($params)
     {
         parent::__construct($params);
+
+        // Get the logger from the session
+        // $si = Controller::getInstance();
+        self::$logger = $this->session->logger;
 
         // A view file can also be set in the constructor
         // $this->view->setLayoutFile('Layout');
@@ -43,9 +48,13 @@ class MainController extends Controller
 
     public function log()
     {
-        $logger = new Logger(PATH . APPLICATION_LOG);
-        $logger->debug(array('ok' => 'ok'));
-        $logger->log('Thats a text', array('ok' => 'ok'));
+        // $logger = new Logger(PATH . APPLICATION_LOG);
+        // $si = Controller::getInstance();
+        // $logger = $si->session->logger;
+        // var_dump($this->session->logger);
+
+        self::$logger->info('Info', array('ok' => 'working'));
+        self::$logger->debug('Debug', array('ok' => 'working'));
     }
 
 }

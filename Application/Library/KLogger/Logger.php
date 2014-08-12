@@ -4,8 +4,9 @@ namespace Application\Library\KLogger;
 
 use DateTime;
 use RuntimeException;
-use Application\Library\KLogger\Psr\LoggerInterface;
-use Application\Library\KLogger\Psr\LogLevel;
+
+// use Application\Library\KLogger\Psr\LoggerInterface;
+// use Application\Library\KLogger\Psr\LogLevel;
 
 /**
  * This class is an updated version of KLogger.
@@ -30,8 +31,17 @@ use Application\Library\KLogger\Psr\LogLevel;
 /**
  * Class documentation
  */
-class Logger implements LoggerInterface
+class Logger
 {
+
+    const EMERGENCY = 'emergency';
+    const ALERT = 'alert';
+    const CRITICAL = 'critical';
+    const ERROR = 'error';
+    const WARNING = 'warning';
+    const NOTICE = 'notice';
+    const INFO = 'info';
+    const DEBUG = 'debug';
 
     /**
      * Path to the log file
@@ -43,16 +53,16 @@ class Logger implements LoggerInterface
      * Current minimum logging threshold
      * @var integer
      */
-    private $logLevelThreshold = LogLevel::DEBUG;
+    private $logLevelThreshold = self::DEBUG;
     private $logLevels = array(
-        LogLevel::EMERGENCY => 0,
-        LogLevel::ALERT => 1,
-        LogLevel::CRITICAL => 2,
-        LogLevel::ERROR => 3,
-        LogLevel::WARNING => 4,
-        LogLevel::NOTICE => 5,
-        LogLevel::INFO => 6,
-        LogLevel::DEBUG => 7,
+        self::EMERGENCY => 0,
+        self::ALERT => 1,
+        self::CRITICAL => 2,
+        self::ERROR => 3,
+        self::WARNING => 4,
+        self::NOTICE => 5,
+        self::INFO => 6,
+        self::DEBUG => 7,
     );
 
     /**
@@ -80,7 +90,7 @@ class Logger implements LoggerInterface
      * @param integer $logLevelThreshold  The LogLevel Threshold
      * @return void
      */
-    public function __construct($logDirectory, $logLevelThreshold = LogLevel::DEBUG)
+    public function __construct($logDirectory, $logLevelThreshold = self::DEBUG, $fileName = null)
     {
         $this->logLevelThreshold = $logLevelThreshold;
 
@@ -143,6 +153,7 @@ class Logger implements LoggerInterface
         if ($this->logLevels[$this->logLevelThreshold] < $this->logLevels[$level]) {
             return;
         }
+
         $message = $this->formatMessage($level, $message, $context);
         $this->write($message);
     }
@@ -235,42 +246,42 @@ class Logger implements LoggerInterface
 
     public function emergency($message, array $context = array())
     {
-        $this->log($this->logLevelThreshold, $message, $context);
+        $this->log(self::EMERGENCY, $message, $context);
     }
 
     public function alert($message, array $context = array())
     {
-        $this->log($this->logLevelThreshold, $message, $context);
+        $this->log(self::ALERT, $message, $context);
     }
 
     public function critical($message, array $context = array())
     {
-        $this->log($this->logLevelThreshold, $message, $context);
+        $this->log(self::CRITICAL, $message, $context);
     }
 
     public function error($message, array $context = array())
     {
-        $this->log($this->logLevelThreshold, $message, $context);
+        $this->log(self::ERROR, $message, $context);
     }
 
     public function warning($message, array $context = array())
     {
-        $this->log($this->logLevelThreshold, $message, $context);
+        $this->log(self::WARNING, $message, $context);
     }
 
     public function notice($message, array $context = array())
     {
-        $this->log($this->logLevelThreshold, $message, $context);
+        $this->log(self::NOTICE, $message, $context);
     }
 
     public function info($message, array $context = array())
     {
-        $this->log($this->logLevelThreshold, $message, $context);
+        $this->log(self::INFO, $message, $context);
     }
 
     public function debug($message, array $context = array())
     {
-        $this->log($this->logLevelThreshold, $message, $context);
+        $this->log(self::DEBUG, $message, $context);
     }
 
 }
