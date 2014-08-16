@@ -2,9 +2,9 @@
 
 namespace Application\Controller;
 
-use Application\Library\KLogger\Logger;
 use Framework\Controller;
 use Application\Model\ProductModel;
+use \Application\Library\Twig;
 
 /**
  * Description of Main
@@ -16,10 +16,8 @@ class MainController extends Controller
 
     private static $logger;
 
-    function __construct($params)
+    public function init()
     {
-        parent::__construct($params);
-
         // Get the logger from the session
         // $si = Controller::getInstance();
         self::$logger = $this->session->logger;
@@ -48,13 +46,12 @@ class MainController extends Controller
 
     public function log()
     {
-        // $logger = new Logger(PATH . APPLICATION_LOG);
-        // $si = Controller::getInstance();
-        // $logger = $si->session->logger;
-        // var_dump($this->session->logger);
+        self::$logger->info('Enter');
 
-        self::$logger->info('Info', array('ok' => 'working'));
-        self::$logger->debug('Debug', array('ok' => 'working'));
+        $twig = new Twig(true);
+        $twig->render('Layout.html.twig', array());
+
+        self::$logger->info('Exit');
     }
 
 }

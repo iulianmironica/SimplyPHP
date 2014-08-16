@@ -40,15 +40,18 @@ class Input
      * @param string $name
      * @return string or null
      */
-    public function __get($name)
+    public function __get($name, $filter = FILTER_DEFAULT)
     {
-        if (!empty(filter_input(INPUT_GET, $name))) {
-            return filter_input(INPUT_GET, $name);
-        } else if (!empty(filter_input(INPUT_POST, $name))) {
-            return filter_input(INPUT_GET, $name);
+        $filteredGetValue = filter_input(INPUT_GET, $name, $filter);
+        $filteredPostValue = filter_input(INPUT_POST, $name, $filter);
+        if (!empty($filteredGetValue)) {
+            return $filteredGetValue;
+        } else if (!empty($filteredPostValue)) {
+            return $filteredPostValue;
         } else {
             return null;
         }
     }
 
+    // TODO: READ ABOUT MODEL BINDING
 }

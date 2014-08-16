@@ -90,7 +90,7 @@ class Logger
      * @param integer $logLevelThreshold  The LogLevel Threshold
      * @return void
      */
-    public function __construct($logDirectory, $logLevelThreshold = self::DEBUG, $fileName = null)
+    public function __construct($logDirectory, $logLevelThreshold = self::DEBUG, array $options = array())
     {
         $this->logLevelThreshold = $logLevelThreshold;
 
@@ -107,6 +107,13 @@ class Logger
         $this->fileHandle = fopen($this->logFilePath, 'a');
         if (!$this->fileHandle) {
             throw new RuntimeException('The file could not be opened. Check permissions.');
+        }
+
+        // Set the array options
+        if (!empty($options)) {
+            if (isset($options['timestamp'])) {
+                $this->dateFormat = $options['timestamp'];
+            }
         }
     }
 

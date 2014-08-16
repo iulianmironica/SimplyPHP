@@ -21,14 +21,14 @@ class View
     public $loadedViews = array();
 
     /**
-     * @param type $controller
-     * @param type $action
+     * @param \Framework\Router $router
+     * @param \Framework\Session $session
      */
-    public function __construct($params)
+    public function __construct(Router $router, Session $session)
     {
-        $this->controller = $params['router']->controller;
-        $this->action = $params['router']->action;
-        $this->session = $params['session'];
+        $this->controller = $router->controller;
+        $this->action = $router->action;
+        $this->session = $session;
 
         // Set the default layout
         $this->layout = Utility::prepairFileName(Config::VIEW_LAYOUT_FILE, 'View');
@@ -108,7 +108,11 @@ class View
 
     public function __get($name)
     {
-        return isset($this->variables[$name]) ? $this->variables[$name] : null;
+        if (isset($this->variables[$name])) {
+            return $this->variables[$name];
+        } else {
+            return null;
+        }
     }
 
 }

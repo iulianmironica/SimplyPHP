@@ -31,7 +31,11 @@ class Session
 
     public function __get($name)
     {
-        return isset($_SESSION[$name]) ? $_SESSION[$name] : null;
+        if (isset($_SESSION[$name])) {
+            return $_SESSION[$name];
+        } else {
+            return null;
+        }
     }
 
     public function __set($name, $value)

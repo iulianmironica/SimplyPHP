@@ -12,6 +12,7 @@ $autoloader->addNamespace('Application\Controller', '/Application/Controller');
 $autoloader->addNamespace('Application\Model', '/Application/Model');
 $autoloader->addNamespace('Application\Settings', 'Application/Settings');
 $autoloader->addNamespace('Application\Library', 'Application/Library');
+$autoloader->addNamespace('vendor', 'vendor');
 $autoloader->register();
 
 // Load and start the Session
@@ -19,11 +20,11 @@ $session = new \Framework\Session();
 
 // TODO: Create a Dispatcher / preDispatch method to be called before initialization of the controller
 // --------------------------------------------------------------------------------------
-// Load the logger if specified
-if (isset(\Application\Settings\Config::$logger['start']) && \Application\Settings\Config::$logger['start'] === true) {
-    $session->logger = new \Application\Library\KLogger\Logger(PATH . APPLICATION_LOG, \Application\Settings\Config::$logger['level']);
+// Load the logger with the specified level or the default level
+if (isset(\Application\Settings\Config::$logger['enable']) && \Application\Settings\Config::$logger['enable'] === true) {
+    $session->logger = new \Application\Library\KLogger\Logger(APPLICATION_LOG, \Application\Settings\Config::$logger['level'], \Application\Settings\Config::$logger);
 } else {
-    $session->logger = new \Application\Library\KLogger\Logger(PATH . APPLICATION_LOG, \Application\Library\KLogger\Logger::ALERT);
+    $session->logger = new \Application\Library\KLogger\Logger(APPLICATION_LOG, \Application\Library\KLogger\Logger::ALERT, \Application\Settings\Config::$logger);
 }
 
 // Load and the Router and prepair the URI
@@ -36,20 +37,19 @@ $pathToController = Utility::getPhpFilePath($router->controller);
 if (file_exists($pathToController)) {
 
     // require_once PATH . DS . APPLICATION_CONTROLLER . $router->controller . '.php';
-    // $controllerName = str_replace("/", "\\", "/Application/Controller/" . $router->controller);
     $controllerName = APPLICATION_CONTROLLER . $router->controller;
 
     // Load specific controller and sent the router info
-    $controller = new $controllerName(array(
-        'router' => $router,
-        'session' => $session
-    ));
+    $controller = new $controllerName();
+
+    // This will set the base controller data
+    $controller->initialize($router, $session, $controller);
 
     if (method_exists($controller, $router->action)) {
         $controller->{$router->action}($router);
     } else if (!is_dir($pathToController)) {
-        Utility::showNotFoundMessage("404 {$router->action} action not found");
+        Utility::showNotFoundMessage(" {$router->action} action not found");
     }
 } else if (!is_dir($pathToController)) {
-    Utility::showNotFoundMessage("404 {$pathToController} controller not found");
+    Utility::showNotFoundMessage(" {$pathToController} controller not found");
 }

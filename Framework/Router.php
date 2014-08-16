@@ -58,7 +58,11 @@ class Router
     public function getUriSegment($segmentNumber)
     {
         $parts = $this->uriExtractParts();
-        return isset($parts[$segmentNumber]) ? $parts[$segmentNumber] : '';
+        if (isset($parts[$segmentNumber])) {
+            return $parts[$segmentNumber];
+        } else {
+            return '';
+        }
     }
 
     public function getRequest()

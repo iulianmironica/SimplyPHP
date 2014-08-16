@@ -29,7 +29,12 @@ class Utility
      */
     public static function baseUrl($url = null)
     {
-        return \Application\Settings\Config::ROUTER_SCHEME . BASE_URL . ($url ? : $url);
+        $uri = \Application\Settings\Config::ROUTER_SCHEME . BASE_URL;
+        if (!empty($url)) {
+            return $uri .= $url;
+        } else {
+            return $uri;
+        }
     }
 
     /**
@@ -44,8 +49,6 @@ class Utility
         } else {
             return ucfirst(strtolower(trim($fileName)));
         }
-
-        // return ucfirst(strtolower(trim($fileName))) . $concatenation ? : $concatenation;
     }
 
     public static function showError($message)

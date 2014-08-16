@@ -18,19 +18,27 @@ class Config
     const DATABASE_HOST = 'localhost';
     const DATABASE_USER = 'root';
     const DATABASE_PASSWORD = '';
-    const DATABASE_NAME = 'disertation';
-    // View settings
-    const VIEW_LAYOUT_FILE = 'Layout';
+    const DATABASE_NAME = '';
 
     // Logger settings
     public static $logger = [
-        'start' => true, // boolean
+        'enable' => false, // boolean
         'level' => 'debug', // emergency, alert, critical, error, warning, notice, info, debug
-        'file' => 'logger.txt', // default file name
+        'file' => 'logger.txt', // TODO: default file name
         'timestamp' => 'm-d-Y G:i:s' // leave blank for none
     ];
 
+    // If Twig is enabled this is ignored
+    const VIEW_LAYOUT_FILE = 'Layout';
+
+    // Templating settings with Twig
+    public static $twig = [
+        'enable' => true,
+        'cache' => 'Twig', // Cache directory
+        'template' => 'Application/View', // Views/templates directory
+    ];
+
     // SimplyPHP Framework version
-    const version = '0.2';
+    const version = '0.3'; // 0.1 Framework, 0.2 Logger, 0.3 Twig
 
 }

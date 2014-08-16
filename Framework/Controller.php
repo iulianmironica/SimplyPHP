@@ -15,18 +15,28 @@ abstract class Controller
     public $view;
     public static $instance;
 
-    public function __construct($params)
+    abstract function index();
+
+    /** Use dependency injection to make properties from Controller to be
+     * available to all controller classes that extend from this.
+     *
+     * @param \Framework\Router $router
+     * @param \Framework\Session $session
+     * @param type $controller
+     */
+    public function initialize(Router $router, Session $session, $controller)
     {
-        self::$instance = &$this;
-
-        $router = $params['router'];
-        $session = $params['session'];
-
         $this->router = $router;
         $this->session = $session;
 
-        // Set the view
-        $this->view = new View($params);
+        self::$instance = &$this;
+
+        $this->view = new View($router, $session);
+
+        // Execute the init method from the accessed controller
+        if (method_exists($controller, 'init')) {
+            $controller->init();
+        }
     }
 
     public static function &getInstance()
@@ -34,5 +44,4 @@ abstract class Controller
         return self::$instance;
     }
 
-    abstract function index();
 }
