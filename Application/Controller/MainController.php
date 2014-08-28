@@ -44,14 +44,14 @@ class MainController extends Controller
         ));
     }
 
-    public function log()
+    public function ok()
     {
-        self::$logger->info('Enter');
+        // self::$logger->info('Enter');
 
         $twig = new Twig(true);
-        $twig->render('Layout.html.twig', array());
+        $twig->render('Main/ok.html.twig', ['name' => 'SimplyPHP']);
 
-        self::$logger->info('Exit');
+        // self::$logger->info('Exit');
     }
 
 }

@@ -17,10 +17,8 @@ class ServiceController extends Controller
     private static $responseSuccess = ['status' => 'success'];
     private static $responseError = ['status' => 'error'];
 
-    public function __construct($params)
+    public function init()
     {
-        parent::__construct($params);
-
         // Raise script time and memory limits
         Helper::raiseTimeAndMemoryLimits();
     }
@@ -38,14 +36,14 @@ class ServiceController extends Controller
     {
         if ($this->router->getRequest() === 'GET') {
 
-            $basket = is_null($this->session->basket) ? array() : $this->session->basket;
-            $basket[Input::get('productId')] = array(
+            $basket = is_null($this->session->basket) ? [] : $this->session->basket;
+            $basket[Input::get('productId')] = [
                 'productId' => Input::get('productId'),
                 'classId' => Input::get('classId'),
                 'department' => Input::get('department'),
                 'product' => Input::get('product'),
                 'price' => Input::get('price'),
-            );
+            ];
             $this->session->basket = $basket;
 
             echo json_encode(self::$responseSuccess);

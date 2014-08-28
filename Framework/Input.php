@@ -27,10 +27,10 @@ class Input
      * @param type $item
      * @return type
      */
-    public static function get($item = null, $filter = FILTER_DEFAULT)
+    public static function get($item = null)
     {
         if (!empty($item)) {
-            return filter_input(INPUT_GET, $item, $filter);
+            return filter_input(INPUT_GET, $item);
         } else {
             return filter_input_array(INPUT_GET);
         }
@@ -40,10 +40,10 @@ class Input
      * @param string $name
      * @return string or null
      */
-    public function __get($name, $filter = FILTER_DEFAULT)
+    public function __get($name)
     {
-        $filteredGetValue = filter_input(INPUT_GET, $name, $filter);
-        $filteredPostValue = filter_input(INPUT_POST, $name, $filter);
+        $filteredGetValue = filter_input(INPUT_GET, $name);
+        $filteredPostValue = filter_input(INPUT_POST, $name);
         if (!empty($filteredGetValue)) {
             return $filteredGetValue;
         } else if (!empty($filteredPostValue)) {

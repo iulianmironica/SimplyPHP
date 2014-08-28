@@ -2,7 +2,8 @@
 
 namespace Framework;
 
-/**
+/** This is an updated version of Psr4AutoloaderClass.
+ *
  * An example of a general-purpose implementation that includes the optional
  * functionality of allowing multiple base directories for a single namespace
  * prefix.
@@ -113,6 +114,19 @@ class Autoloader
         }
     }
 
+    /** Add multiple namespaces at once from an array.
+     *
+     * @param array $namespaces
+     */
+    public function addNamespaces(array $namespaces = array())
+    {
+        if (!empty($namespaces)) {
+            foreach ($namespaces as $prefix => $directory) {
+                $this->addNamespace($prefix, $directory);
+            }
+        }
+    }
+
     /**
      * Loads the class file for a given class name.
      *
@@ -122,7 +136,7 @@ class Autoloader
      */
     public function loadClass($class)
     {
-        print (" $class <br>");
+        // print (" $class <br>");
 
         // the current namespace prefix
         $prefix = $class;
