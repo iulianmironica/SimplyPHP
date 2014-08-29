@@ -43,4 +43,13 @@ class Session
         $_SESSION[$name] = $value;
     }
 
+    public function data()
+    {
+        if (session_status() !== PHP_SESSION_ACTIVE) {
+            return;
+        }
+
+        return $_SESSION;
+    }
+
 }

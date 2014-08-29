@@ -1,7 +1,10 @@
 {% extends 'Layout.html.twig' %}
 
 {% block alabala %}
-    
-    Hello from ok.
-    
+
+    Hello from {{ name }}
+
+    {{ baseUrl('/ok') }}
+    {{ session.ok }}
+
 {% endblock %}

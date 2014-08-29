@@ -47,9 +47,9 @@ class MainController extends Controller
     public function ok()
     {
         // self::$logger->info('Enter');
+        // $this->twig->render('Main/ok.html.twig', ['name' => 'SimplyPHP']);
 
-        $twig = new Twig(true);
-        $twig->render('Main/ok.html.twig', ['name' => 'SimplyPHP']);
+        $this->twig->display('Main/ok.html.twig', ['name' => 'SimplyPHP']);
 
         // self::$logger->info('Exit');
     }

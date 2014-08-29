@@ -13,6 +13,7 @@ abstract class Controller
     public $session;
     public $router;
     public $view;
+    public $twig;
     public static $instance;
 
     abstract function index();
@@ -36,6 +37,17 @@ abstract class Controller
         // Execute the init method from the accessed controller
         if (method_exists($controller, 'init')) {
             $controller->init();
+        }
+
+        // Init Twig if enabled
+        if (isset(\Application\Settings\Config::$twig['enable']) && \Application\Settings\Config::$twig['enable'] === true) {
+
+            $debug = false;
+            if (ENVIRONMENT == 'development') {
+                $debug = true;
+            }
+
+            $this->twig = new \Application\Library\Twig($debug);
         }
     }
 

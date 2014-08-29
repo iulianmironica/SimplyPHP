@@ -20,11 +20,45 @@ class Twig
             'cache' => APPLICATION_CACHE . Config::$twig['cache'],
             'debug' => $debug,
         ));
+
+        // Add the base url
+        $this->addBaseUrl('baseUrl');
     }
 
-    public function render($file, array $data = array())
+    public function render($template, array $data = array())
     {
-        $this->twig->render($file, $data);
+        $data['session'] = $this->getSessionData();
+        return $this->twig->render($template, $data);
+    }
+
+    public function display($template, array $data = array())
+    {
+        $data['session'] = $this->getSessionData();
+        $this->twig->display($template, $data);
+    }
+
+    private function addFunctions()
+    {
+        foreach (get_defined_functions() as $functions) {
+            foreach ($functions as $function) {
+                $this->twig->addFunction($function, new \Twig_Function_Function($function));
+            }
+        }
+    }
+
+    public function getSessionData()
+    {
+        // Get instange
+        $fi = \Framework\Controller::getInstance();
+        // Get session data
+        return $fi->session->data();
+    }
+
+    public function addBaseUrl($name)
+    {
+        $this->twig->addFunction($name, new \Twig_SimpleFunction($name, function($url = null) {
+            return \Framework\Utility::baseUrl($url);
+        }));
     }
 
 }
