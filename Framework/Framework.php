@@ -27,7 +27,7 @@ if (isset(\Application\Settings\Config::$namespaces) && !empty(\Application\Sett
     $autoloader->addNamespaces(\Application\Settings\Config::$namespaces);
 }
 
-// Load and start the Session
+// Start the Session
 $session = new \Framework\Session();
 
 // TODO: Create a Dispatcher / preDispatch method to be called before initialization of the controller
@@ -39,7 +39,7 @@ if (isset(\Application\Settings\Config::$logger['level'])) {
     $session->logger = new \Application\Library\KLogger\Logger(APPLICATION_LOG, \Application\Library\KLogger\Logger::ALERT, \Application\Settings\Config::$logger);
 }
 
-// Load and the Router and prepair the URI
+// Start the Router and prepair the URI
 $router = new \Framework\Router();
 
 // Set the controller, action and the query

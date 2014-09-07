@@ -52,8 +52,9 @@ class Config
      * @var array
      */
     public static $namespaces = [
-            // 'namespace\namespace' => 'path/to/the/directory'
-            // 'Application\Library' => 'Application/Library',
+        // 'namespace\namespace' => 'path/to/the/directory'
+        // 'Application\Library' => 'Application/Library',
+        'Application\Controller\Testing' => 'Application/Controller/Testing',
     ];
 
     // Application version

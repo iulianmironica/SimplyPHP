@@ -18,8 +18,11 @@ class Utility
      */
     public static function getPhpFilePath($file, $location = APPLICATION_CONTROLLER, $extension = '.php')
     {
-        // return PATH . DS . $location . ucfirst(strtolower(trim($file))) . $extension;
-        // $moduleName = array_pop(@explode("\\", $location, -1));
+        // The file might be a subfolder, return it as it is
+        if (strstr($file, DS)) {
+            return PATH . $location . $file . $extension;
+        }
+
         return PATH . $location . self::prepairFileName($file, '') . $extension;
     }
 
