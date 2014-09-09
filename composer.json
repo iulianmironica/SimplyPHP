@@ -1,8 +1,8 @@
 {
-    "name": "simplyphp/simplyphp",
+    "name": "iulianmironica/simplyphp",
     "description": "SimplyPHP Framework",
     "keywords": ["framework", "simplyPHP"],
-    "license": "MIT",
+    "license": "CC BY-SA",
     "authors": [
         {
             "name": "Iulian Mironica"
@@ -10,6 +10,6 @@
     ],
     "require": {
         "php": ">=5.4",
-        "twig/twig" : "1.*"
+        "twig/twig": "1.*"
     }
 }

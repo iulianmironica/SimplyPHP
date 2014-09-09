@@ -64,4 +64,31 @@ class Utility
         die($message);
     }
 
+    /** TODO: Refactor.
+     * Redirects to a local or external url.
+     *
+     * @param string $uri
+     * @param bool $refresh
+     * @param int $responseCode
+     */
+    public static function redirect($uri = '', $refresh = false, $responseCode = 302)
+    {
+        if (empty($uri)) {
+            // Redirect to base url
+            $uri = self::baseUrl();
+        }
+
+        if (!preg_match('#^(https?|s?ftp)://#i', $uri)) {
+            $uri = self::baseUrl($uri);
+        }
+
+        if (empty($refresh)) {
+            header("Location: " . $uri, TRUE, $responseCode);
+        } else {
+            header("Refresh:0;url=" . $uri);
+        }
+
+        exit();
+    }
+
 }

@@ -7,7 +7,7 @@ use Application\Model\ProductModel;
 use \Application\Library\Twig;
 
 /**
- * Description of Main
+ * Description of MainController
  *
  * @author Iulian Mironica
  */

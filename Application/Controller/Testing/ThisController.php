@@ -3,7 +3,7 @@
 namespace Application\Controller\Testing;
 
 /**
- * Description of yo
+ * Description of ThisController
  *
  * @author Iulian Mironica
  */
@@ -12,7 +12,15 @@ class ThisController extends \Framework\Controller
 
     public function index()
     {
-        echo 'Subfolder controller is working!';
+        echo 'Controller within subfolder is working properly!';
+    }
+
+    public function example()
+    {
+        $externalRedirectUri = 'http://google.ro';
+        $internalRedirectUri = '/main';
+
+        $this->redirect($externalRedirectUri);
     }
 
 }

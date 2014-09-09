@@ -56,4 +56,16 @@ abstract class Controller
         return self::$instance;
     }
 
+    /** Redirects to a local or external url.
+     *
+     * @param string $uri
+     * @param bool $refresh
+     * @param int $statusCode
+     * @return void
+     */
+    public function redirect($uri, $refresh = false, $statusCode = 302)
+    {
+        Utility::redirect($uri, $refresh, $statusCode);
+    }
+
 }
