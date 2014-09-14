@@ -2,6 +2,8 @@
 
 namespace Framework;
 
+use Application\Settings\Config;
+
 require PATH . FRAMEWORK_PATH . 'Autoloader.php';
 
 /*
@@ -19,27 +21,32 @@ $autoloader->addNamespace('Application\Controller', '/Application/Controller');
 $autoloader->addNamespace('Application\Model', '/Application/Model');
 $autoloader->addNamespace('Application\Settings', 'Application/Settings');
 $autoloader->addNamespace('Application\Library', 'Application/Library');
-$autoloader->addNamespace('vendor', 'vendor');
+// $autoloader->addNamespace('vendor', 'vendor');
 $autoloader->register();
 
-// Set user defined namespaces
-if (isset(\Application\Settings\Config::$namespaces) && !empty(\Application\Settings\Config::$namespaces)) {
-    $autoloader->addNamespaces(\Application\Settings\Config::$namespaces);
+if (isset(Config::$doctrine['enable']) && Config::$doctrine['enable'] === true) {
+    $autoloader->addNamespace('Doctrine\Common', Config::$doctrine['pathToCommon']);
+    $autoloader->register();
 }
 
-// Start the Session
+// Set user defined namespaces
+if (isset(Config::$namespaces) && !empty(Config::$namespaces)) {
+    $autoloader->addNamespaces(Config::$namespaces);
+}
+
+// Load and start the Session
 $session = new \Framework\Session();
 
 // TODO: Create a Dispatcher / preDispatch method to be called before initialization of the controller
 // --------------------------------------------------------------------------------------
 // Load the logger with the specified level or the default level
-if (isset(\Application\Settings\Config::$logger['level'])) {
-    $session->logger = new \Application\Library\KLogger\Logger(APPLICATION_LOG, \Application\Settings\Config::$logger['level'], \Application\Settings\Config::$logger);
+if (isset(Config::$logger['level'])) {
+    $session->logger = new \Application\Library\KLogger\Logger(APPLICATION_LOG, Config::$logger['level'], Config::$logger);
 } else {
-    $session->logger = new \Application\Library\KLogger\Logger(APPLICATION_LOG, \Application\Library\KLogger\Logger::ALERT, \Application\Settings\Config::$logger);
+    $session->logger = new \Application\Library\KLogger\Logger(APPLICATION_LOG, \Application\Library\KLogger\Logger::ALERT, Config::$logger);
 }
 
-// Start the Router and prepair the URI
+// Load and the Router and prepair the URI
 $router = new \Framework\Router();
 
 // Set the controller, action and the query

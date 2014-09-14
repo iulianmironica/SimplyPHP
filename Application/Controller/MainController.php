@@ -4,7 +4,6 @@ namespace Application\Controller;
 
 use Framework\Controller;
 use Application\Model\ProductModel;
-use \Application\Library\Twig;
 
 /**
  * Description of MainController

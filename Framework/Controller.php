@@ -63,7 +63,7 @@ abstract class Controller
      * @param int $statusCode
      * @return void
      */
-    public function redirect($uri, $refresh = false, $statusCode = 302)
+    public function redirect($uri = '', $refresh = false, $statusCode = 302)
     {
         Utility::redirect($uri, $refresh, $statusCode);
     }

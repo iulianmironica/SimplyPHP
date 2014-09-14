@@ -54,9 +54,15 @@ class Utility
         }
     }
 
-    public static function showError($message)
+    /**
+     * @param type $message
+     * @param type $data
+     */
+    public static function showError($message, $data = null)
     {
-        die($message);
+        var_dump($message);
+        var_dump($data);
+        die();
     }
 
     public static function showNotFoundMessage($message)
@@ -82,10 +88,10 @@ class Utility
             $uri = self::baseUrl($uri);
         }
 
-        if (empty($refresh)) {
-            header("Location: " . $uri, TRUE, $responseCode);
-        } else {
+        if ($refresh) {
             header("Refresh:0;url=" . $uri);
+        } else {
+            header("Location: " . $uri, TRUE, $responseCode);
         }
 
         exit();

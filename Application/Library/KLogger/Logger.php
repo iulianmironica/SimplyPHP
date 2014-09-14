@@ -251,41 +251,73 @@ class Logger
         return $indent . str_replace("\n", "\n" . $indent, $string);
     }
 
+    /**
+     * @param type $message
+     * @param array $context
+     */
     public function emergency($message, array $context = array())
     {
         $this->log(self::EMERGENCY, $message, $context);
     }
 
+    /**
+     * @param type $message
+     * @param array $context
+     */
     public function alert($message, array $context = array())
     {
         $this->log(self::ALERT, $message, $context);
     }
 
+    /**
+     * @param type $message
+     * @param array $context
+     */
     public function critical($message, array $context = array())
     {
         $this->log(self::CRITICAL, $message, $context);
     }
 
+    /**
+     * @param type $message
+     * @param array $context
+     */
     public function error($message, array $context = array())
     {
         $this->log(self::ERROR, $message, $context);
     }
 
+    /**
+     * @param type $message
+     * @param array $context
+     */
     public function warning($message, array $context = array())
     {
         $this->log(self::WARNING, $message, $context);
     }
 
+    /**
+     * @param type $message
+     * @param array $context
+     */
     public function notice($message, array $context = array())
     {
         $this->log(self::NOTICE, $message, $context);
     }
 
+    /**
+     * @param type $message
+     * @param array $context
+     */
     public function info($message, array $context = array())
     {
         $this->log(self::INFO, $message, $context);
     }
 
+    /**
+     * @param type $message
+     * @param array $context
+     */
     public function debug($message, array $context = array())
     {
         $this->log(self::DEBUG, $message, $context);

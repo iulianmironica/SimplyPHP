@@ -115,4 +115,13 @@ class View
         }
     }
 
+    public function __isset($name)
+    {
+        if (isset($this->variables[$name])) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
 }

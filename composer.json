@@ -5,11 +5,13 @@
     "license": "CC BY-SA",
     "authors": [
         {
-            "name": "Iulian Mironica"
+            "name": "Iulian Mironica",
+            "email": "iulian.mironica@gmail.com"
         }
     ],
     "require": {
         "php": ">=5.4",
-        "twig/twig": "1.*"
+        "twig/twig": "1.*",
+        "doctrine/dbal": ">=2.4.0"
     }
 }

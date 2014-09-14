@@ -3,6 +3,7 @@
 namespace Framework;
 
 use Framework\Database;
+use Application\Settings\Config;
 
 /**
  * Description of Model
@@ -12,13 +13,17 @@ use Framework\Database;
 class Model
 {
 
-    public $db;
+    public $doctrine;
+    public $pdo;
     public $tableName;
 
     public function __construct()
     {
-        $this->db = Database::init();
-        $this->db->setAttribute(\PDO::ATTR_DEFAULT_FETCH_MODE, \PDO::FETCH_OBJ);
+        if (isset(Config::$doctrine['enable']) && Config::$doctrine['enable'] === true) {
+            $this->doctrine = \Application\Library\Doctrine::connect();
+        } else {
+            $this->pdo = Database::init();
+        }
     }
 
     /**
@@ -31,24 +36,30 @@ class Model
      */
     public function getById($id, $tableName, $idColumnName = 'id', $columns = null, $orderBy = null)
     {
+        try {
 
-        if (is_array($columns)) {
-            $columns = implode(',', $columns);
-        } else {
-            $columns = '*';
-        }
+            if (is_array($columns)) {
+                $columns = implode(',', $columns);
+            } else {
+                $columns = '*';
+            }
 
-        $sql = "SELECT {$columns}
+            $sql = "SELECT {$columns}
                 FROM {$tableName}
                 WHERE {$idColumnName} = {$id} ";
 
 
-        if (!empty($orderBy)) {
-            $sql.= " ORDER BY {$orderBy} ";
-        }
+            if (!empty($orderBy)) {
+                $sql.= " ORDER BY {$orderBy} ";
+            }
 
-        $results = $this->db->query($sql);
-        return $results->fetch();
+            $results = $this->pdo->prepare($sql);
+            $results->execute();
+            return $results->fetch();
+        } catch (\PDOException $e) {
+            Utility::showError('Exit. Exception: ', $e);
+            return false;
+        }
     }
 
     /**
@@ -73,34 +84,37 @@ class Model
         if (!empty($orderBy)) {
             $sql.= " ORDER BY {$orderBy} ";
         }
-        $data = array();
-        $results = $this->db->query($sql);
-        while ($result = $results->fetchAll()) {
-            $data[] = $result;
-        }
-        return $data;
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute();
+        return $stmt->fetchAll();
     }
 
     /**
+     *
      * @param type $sql
      * @param type $parameters
-     * @param type $fetchMode PDO::FETCH_ASSOC
+     * @param type $fetchMode
+     * @param type $fetchAll = true
      * @return null
      */
-    public function query($sql, $parameters = null, $fetchMode = PDO::FETCH_ASSOC)
+    public function query($sql, $parameters = null, $fetchMode = \PDO::FETCH_ASSOC, $fetchAll = true)
     {
         try {
-            $stmt = $this->db->prepare($sql);
+            $stmt = $this->pdo->prepare($sql);
             $stmt->execute($parameters ? : $parameters);
 
             // var_dump($stmt);
             // var_dump($stmt->fetchAll($fetchMode));
-            // exit();
+            //exit();
 
-            return $stmt->fetchAll($fetchMode);
-        } catch (Exception $e) {
-            Util::showError($e);
-            return null;
+            if ($fetchAll) {
+                return $stmt->fetchAll($fetchMode);
+            } else {
+                return $stmt->fetch($fetchMode);
+            }
+        } catch (\PDOException $e) {
+            Utility::showError('Exit. Exception: ', $e->getMessage());
+            return false;
         }
     }
 
