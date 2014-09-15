@@ -10,6 +10,8 @@ use RuntimeException;
 
 /**
  * This class is an updated version of KLogger.
+ * - Added the format functionality
+ * - Placed all in one class
  * -------------------------------------------
  *
  * Finally, a light, permissions-checking logging class.
@@ -77,6 +79,19 @@ class Logger
      */
     private $dateFormat = 'Y-m-d G:i:s.u';
 
+    /** A log style passed to the contstructor trough $options['format']
+     * Options:
+     * %timestamp%      - the timestamp declared above
+     * %level%          - level declared above
+     * %class%          - clas name
+     * %function%       - method/function name
+     * %message%        - the message passed as param
+     * %line%, %file%   - point to the parent file that triggered method/function
+     *
+     * @var string
+     */
+    private $contextInfoFormat = '%timestamp% %level% %message%';
+
     /**
      * Octal notation for default permissions of the log file
      * @var integer
@@ -111,8 +126,13 @@ class Logger
 
         // Set the array options
         if (!empty($options)) {
-            if (isset($options['timestamp'])) {
+            // Set the timestamp
+            if (isset($options['timestamp']) && !empty($options['timestamp'])) {
                 $this->dateFormat = $options['timestamp'];
+            }
+            // Set the log format
+            if (isset($options['format']) && !empty($options['format'])) {
+                $this->contextInfoFormat = $options['format'];
             }
         }
     }
@@ -161,8 +181,59 @@ class Logger
             return;
         }
 
-        $message = $this->formatMessage($level, $message, $context);
-        $this->write($message);
+        $level = strtoupper($level);
+
+        // Check if there's a log format
+        if (!empty($this->contextInfoFormat)) {
+            $eContext = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 3);
+            $message = $this->assembleMessage($eContext[2], $message, $level);
+            $output = $this->addContext($level, $message, $context);
+        } else {
+            $output = $this->addContext($level, $message, $context, true);
+        }
+
+        $this->write($output);
+    }
+
+    /** Assemble message and the context information if format provided as an
+     * option to the constructor.
+     *
+     * @param array $eContext
+     * @param string $message
+     * @param string $level
+     * @return string
+     */
+    public function assembleMessage($eContext, $message, $level)
+    {
+        $result = $this->contextInfoFormat;
+
+        if (isset($eContext['class'])) {
+            $result = str_replace("%class%", $eContext['class'], $result);
+        }
+        if (isset($eContext['function'])) {
+            $result = str_replace("%function%", $eContext['function'], $result);
+        }
+        if (isset($eContext['file'])) {
+            $result = str_replace("%file%", $eContext['file'], $result);
+        }
+        if (isset($eContext['line'])) {
+            $result = str_replace("%line%", $eContext['line'], $result);
+        }
+
+        /* Does the same thing as above, but it's not so intuitive
+          foreach ($eContext[0] as $key => $val) {
+          $result = str_replace("%{$key}%", $val, $result);
+          }
+         */
+
+        $result = str_replace("%timestamp%", $this->getTimestamp(), $result);
+        $result = str_replace("%message%", $message, $result);
+        $result = str_replace("%level%", $level, $result);
+
+        /** TODO:
+         *  Also store the ip.
+         */
+        return $result;
     }
 
     /**
@@ -180,19 +251,21 @@ class Logger
         }
     }
 
-    /**
-     * Formats the message for logging.
+    /** Formats the message for logging.
      *
-     * @param  string $level   The Log Level of the message
-     * @param  string $message The message to log
-     * @param  array  $context The context
+     * @param string $level
+     * @param string $message
+     * @param mixed $context
+     * @param bool $addFormat
      * @return string
      */
-    private function formatMessage($level, $message, $context)
+    private function addContext($level, $message, $context, $addFormat = false)
     {
-        $level = strtoupper($level);
         if (!empty($context)) {
             $message .= PHP_EOL . $this->indent($this->contextToString($context));
+        }
+        if (false === $addFormat) {
+            return $message . PHP_EOL;
         }
         return "[{$this->getTimestamp()}] [{$level}] {$message}" . PHP_EOL;
     }

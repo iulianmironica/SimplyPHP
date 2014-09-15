@@ -39,7 +39,15 @@ class Config
     public static $logger = [
         'level' => 'debug', // emergency, alert, critical, error, warning, notice, info, debug
         'file' => 'logger.txt', // TODO: default file name
-        'timestamp' => 'm-d-Y G:i:s' // leave blank for none
+        'timestamp' => 'm-d-Y G:i:s', // leave blank for none
+        'format' => '%timestamp% %level% %class% %function% %message%', // output format - leave blank for none
+            /* %timestamp%      - the timestamp declared above
+             * %level%          - level declared above
+             * %class%          - clas name
+             * %function%       - method/function name
+             * %message%        - the message passed as param
+             * %line%, %file%   - point to the parent file that triggered method/function
+             */
     ];
 
     /* --------------------- View --------------------- */
