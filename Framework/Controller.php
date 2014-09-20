@@ -12,6 +12,7 @@ abstract class Controller
 
     public $session;
     public $router;
+    public $input;
     public $view;
     public $twig;
     public static $instance;
@@ -25,10 +26,11 @@ abstract class Controller
      * @param \Framework\Session $session
      * @param type $controller
      */
-    public function initialize(Router $router, Session $session, $controller)
+    public function initialize(Router $router, Session $session, Input $input, $controller)
     {
         $this->router = $router;
         $this->session = $session;
+        $this->input = $input;
 
         self::$instance = &$this;
 

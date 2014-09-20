@@ -46,6 +46,9 @@ if (isset(Config::$logger['level'])) {
     $session->logger = new \Application\Library\KLogger\Logger(APPLICATION_LOG, \Application\Library\KLogger\Logger::ALERT, Config::$logger);
 }
 
+// Load the Input
+$input = new \Framework\Input();
+
 // Load and the Router and prepair the URI
 $router = new \Framework\Router();
 
@@ -65,10 +68,10 @@ if (file_exists($pathToController)) {
     $controller = new $controllerName();
 
     // This will set the base controller data
-    $controller->initialize($router, $session, $controller);
+    $controller->initialize($router, $session, $input, $controller);
 
     if (method_exists($controller, $router->action)) {
-        $controller->{$router->action}($router);
+        $controller->{$router->action}();
     } else if (!is_dir($pathToController)) {
         Utility::showNotFoundMessage(" {$router->action} action not found");
     }
