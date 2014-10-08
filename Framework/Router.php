@@ -14,7 +14,7 @@ class Router
 {
 
     public $controller;
-    public $action;
+    public $action = 'index';
     public $query;
     public $uri;
 
@@ -61,8 +61,6 @@ class Router
 
             if (isset($parts[1]) AND ! empty(trim($parts[1]))) {
                 $this->action = strtolower($parts[1]);
-            } else {
-                $this->action = strtolower(Config::DEFAULT_ACTION);
             }
 
             if (isset($parts[2]) AND ! empty($parts[2])) {
