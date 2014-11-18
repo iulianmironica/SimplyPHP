@@ -6,32 +6,41 @@ use Application\Settings\Config;
 
 require PATH . FRAMEWORK_PATH . 'Autoloader.php';
 
-/*
+/* TODO: create a method and put this.
  * SimplyPHP Framework version
  * ---------------------------
  * 0.1 Framework, 0.2 Logger, 0.3 Twig
+ * 0.4 Linux path fixes
+ *
+ * define('VERSION', '0.4');
  */
-define('VERSION', '0.3');
 
 // Initialize the autoloader and set the namespaces of the project
-$autoloader = new Autoloader();
-$autoloader->setBasePath(PATH);
-$autoloader->addNamespace('Framework', '/Framework');
-$autoloader->addNamespace('Application\Controller', '/Application/Controller');
-$autoloader->addNamespace('Application\Model', '/Application/Model');
-$autoloader->addNamespace('Application\Settings', 'Application/Settings');
-$autoloader->addNamespace('Application\Library', 'Application/Library');
-// $autoloader->addNamespace('vendor', 'vendor');
-$autoloader->register();
+$autoLoader = new Autoloader();
+$autoLoader->setBasePath(PATH);
+/* Old implementation
+$autoLoader->addNamespace('Framework', '/Framework');
+$autoLoader->addNamespace('Application\Controller', '/Application/Controller');
+$autoLoader->addNamespace('Application\Model', '/Application/Model');
+$autoLoader->addNamespace('Application\Settings', 'Application/Settings');
+$autoLoader->addNamespace('Application\Library', 'Application/Library');
+// $autoLoader->addNamespace('vendor', 'vendor');
+*/
+$autoLoader->addNamespace(str_replace(DS, '\\', FRAMEWORK_PATH), FRAMEWORK_PATH);
+$autoLoader->addNamespace(str_replace(DS, '\\', APPLICATION_CONTROLLER), APPLICATION_CONTROLLER);
+$autoLoader->addNamespace(str_replace(DS, '\\', APPLICATION_MODEL), APPLICATION_MODEL);
+$autoLoader->addNamespace(str_replace(DS, '\\', APPLICATION_SETTINGS), APPLICATION_SETTINGS);
+$autoLoader->addNamespace(str_replace(DS, '\\', APPLICATION_LIBRARY), APPLICATION_LIBRARY);
+$autoLoader->register();
 
 if (isset(Config::$doctrine['enable']) && Config::$doctrine['enable'] === true) {
-    $autoloader->addNamespace('Doctrine\Common', Config::$doctrine['pathToCommon']);
-    $autoloader->register();
+    $autoLoader->addNamespace('Doctrine\Common', Config::$doctrine['pathToCommon']);
+    $autoLoader->register();
 }
 
 // Set user defined namespaces
 if (isset(Config::$namespaces) && !empty(Config::$namespaces)) {
-    $autoloader->addNamespaces(Config::$namespaces);
+    $autoLoader->addNamespaces(Config::$namespaces);
 }
 
 // Load and start the Session
@@ -62,7 +71,7 @@ $router->setUriParts();
 $pathToController = Utility::getPhpFilePath($router->controller);
 if (file_exists($pathToController)) {
 
-    $controllerName = APPLICATION_CONTROLLER . $router->controller;
+    $controllerName = str_replace(DS, '\\', APPLICATION_CONTROLLER) . $router->controller;
 
     // Load specific controller and sent the router info
     $controller = new $controllerName();

@@ -1,24 +1,24 @@
 <?php
+define('DS', DIRECTORY_SEPARATOR);
 
+// Use DS for subdirectories
 $frameworkPath = 'Framework';
 $applicationPath = 'Application';
 $vendorPath = 'vendor';
 
-define('DS', DIRECTORY_SEPARATOR);
 define('ENVIRONMENT', 'development');
 
 define('PATH', realpath(dirname(dirname(__FILE__))) . DS);
-define('FRAMEWORK_PATH', str_replace("\\", DS, $frameworkPath) . DS);
-define('VENDOR_PATH', str_replace("\\", DS, $vendorPath) . DS);
-// define('APPLICATION_PATH', str_replace("\\", DS, $applicationPath) . DS);
-// define('APPLICATION_SETTINGS', str_replace("\\", DS, "{$applicationPath}\Settings") . DS);
+define('FRAMEWORK_PATH', $frameworkPath . DS);
+define('VENDOR_PATH', $vendorPath . DS);
 
-define('APPLICATION_CONTROLLER', str_replace("\\", DS, "{$applicationPath}\Controller") . DS);
-// efine('APPLICATION_MODEL', str_replace("\\", DS, "{$applicationPath}\Model") . DS);
-define('APPLICATION_VIEW', str_replace("\\", DS, "{$applicationPath}\View") . DS);
-// define('APPLICATION_LIBRARY', str_replace("\\", DS, "{$applicationPath}\Library") . DS);
-define('APPLICATION_LOG', str_replace("\\", DS, PATH . "{$applicationPath}\Log") . DS);
-define('APPLICATION_CACHE', str_replace("\\", DS, PATH . "{$applicationPath}\Cache") . DS);
+define('APPLICATION_CONTROLLER', $applicationPath . DS . 'Controller' . DS);
+define('APPLICATION_MODEL', $applicationPath . DS . 'Model' . DS);
+define('APPLICATION_VIEW', $applicationPath . DS . 'View' . DS);
+define('APPLICATION_SETTINGS', $applicationPath . DS . 'Settings' . DS);
+define('APPLICATION_LIBRARY', $applicationPath . DS . 'Library' . DS);
+define('APPLICATION_LOG', PATH . $applicationPath . DS . 'Log' . DS);
+define('APPLICATION_CACHE', PATH . $applicationPath . DS . 'Cache' . DS);
 
 define('BASE_URL', filter_input(INPUT_SERVER, 'HTTP_HOST'));
 

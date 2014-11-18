@@ -27,30 +27,24 @@ class Utility
     }
 
     /**
-     * @param string $url
+     * @param string $fileName
+     * @param string $concatenation
      * @return string
-     */
-    public static function baseUrl($url = null)
-    {
-        $uri = \Application\Settings\Config::ROUTER_SCHEME . BASE_URL;
-        if (!empty($url)) {
-            return $uri .= $url;
-        } else {
-            return $uri;
-        }
-    }
-
-    /**
-     * @param type $fileName
-     * @param type $concatenation
-     * @return type
      */
     public static function prepairFileName($fileName, $concatenation = false)
     {
         if (!empty($concatenation)) {
             return ucfirst(strtolower(trim($fileName))) . $concatenation;
         } else {
-            return ucfirst(strtolower(trim($fileName)));
+            // TODO refactor
+            $fileName = trim($fileName);
+            // This will return 3 matches, whole string the file and the
+            // concatenation if it has an uppercase word, false otherwise
+            preg_match("/([A-Z]*[a-z]+)([A-Z][a-z]+)/", $fileName, $match);
+            if (isset($match[1]) && isset($match[2])) {
+                return ucfirst(strtolower($match[1])) . $match[2];
+            }
+            return ucfirst(strtolower($fileName));
         }
     }
 
@@ -95,6 +89,20 @@ class Utility
         }
 
         exit();
+    }
+
+    /**
+     * @param string $url
+     * @return string
+     */
+    public static function baseUrl($url = null)
+    {
+        $uri = \Application\Settings\Config::ROUTER_SCHEME . BASE_URL;
+        if (!empty($url)) {
+            return $uri .= $url;
+        } else {
+            return $uri;
+        }
     }
 
 }
