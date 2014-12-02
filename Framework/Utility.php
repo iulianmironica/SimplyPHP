@@ -78,7 +78,9 @@ class Utility
             $uri = self::baseUrl();
         }
 
-        if (!preg_match('#^(https?|s?ftp)://#i', $uri)) {
+        // Allow resources to work with flexible protocol
+        // if (!preg_match('#^(https?|s?ftp)://#i', $uri)) {
+        if (!preg_match('#^((https?:{1}|s?ftp:{1})|\/\/)#i', $uri)) {
             $uri = self::baseUrl($uri);
         }
 
