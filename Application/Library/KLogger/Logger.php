@@ -12,6 +12,8 @@ use RuntimeException;
  * This class is an updated version of KLogger.
  * - Added the format functionality
  * - Placed all in one class
+ *
+ * @author iulian.mironica
  * -------------------------------------------
  *
  * Finally, a light, permissions-checking logging class.
@@ -98,17 +100,21 @@ class Logger
      */
     private $defaultPermissions = 0777;
 
+    // TODO: options
+    // private $options = array();
+
     /**
-     * Class constructor
-     *
-     * @param string  $logDirectory       File path to the logging directory
-     * @param integer $logLevelThreshold  The LogLevel Threshold
-     * @return void
+     * @param array $options
+     * @param string $logLevelThreshold
      */
-    public function __construct($logDirectory, $logLevelThreshold = self::DEBUG, array $options = array())
+    public function __construct(
+        /*$logDirectory,*/
+        array $options = array(),
+        $logLevelThreshold = self::DEBUG)
     {
         $this->logLevelThreshold = $logLevelThreshold;
 
+        /* TODO: REMOVE -> Replaced by createLogFileIfNotExists
         $logDirectory = rtrim($logDirectory, '\\/');
         if (!file_exists($logDirectory)) {
             mkdir($logDirectory, $this->defaultPermissions, true);
@@ -122,10 +128,21 @@ class Logger
         $this->fileHandle = fopen($this->logFilePath, 'a');
         if (!$this->fileHandle) {
             throw new RuntimeException('The file could not be opened. Check permissions.');
-        }
+        }*/
 
         // Set the array options
         if (!empty($options)) {
+
+            // Set the log level
+            if (isset($options['level']) && !empty($options['level'])) {
+                $this->logLevelThreshold = $options['level'];;
+            }
+
+            // Set the log dir
+            if (isset($options['directory']) && !empty($options['directory'])) {
+                $this->logFilePath = $options['directory'];
+            }
+
             // Set the timestamp
             if (isset($options['timestamp']) && !empty($options['timestamp'])) {
                 $this->dateFormat = $options['timestamp'];
@@ -168,6 +185,15 @@ class Logger
     }
 
     /**
+     * @param $message
+     * @param array $context
+     */
+    public function emergency($message, array $context = array())
+    {
+        $this->log(self::EMERGENCY, $message, $context);
+    }
+
+    /**
      * Logs with an arbitrary level.
      *
      * @param mixed $level
@@ -181,6 +207,13 @@ class Logger
             return;
         }
 
+        /*
+        Production environment improvement:
+        Check the log file on every log operation as there might be the case when no log
+        is going to be performed because of the logLevelThreshold therefor we don't need the file
+        to be checked/created unless we're sure we write to it.*/
+        $this->createLogFileIfNotExists();
+
         $level = strtoupper($level);
 
         // Check if there's a log format
@@ -193,6 +226,35 @@ class Logger
         }
 
         $this->write($output);
+    }
+
+    private function createLogFileIfNotExists()
+    {
+        // The file might be open already
+        if (is_null($this->fileHandle)) {
+
+            if (is_null($this->logFilePath)) {
+                throw new RuntimeException('The path of the log file is not set.');
+            }
+
+            $logDirectory = rtrim($this->logFilePath, '\\/');
+            if (!file_exists($logDirectory)) {
+                mkdir($logDirectory, $this->defaultPermissions, true);
+            }
+
+            // TODO: allow a custom file name
+            $fileName = 'Log_' . date('Y-m-d') . '.txt';
+
+            $this->logFilePath = $logDirectory . DIRECTORY_SEPARATOR . $fileName;
+            if (file_exists($this->logFilePath) && !is_writable($this->logFilePath)) {
+                throw new RuntimeException('The file could not be written to. Check that appropriate permissions have been set.');
+            }
+
+            $this->fileHandle = fopen($this->logFilePath, 'a');
+            if (!$this->fileHandle) {
+                throw new RuntimeException('The file could not be opened. Check permissions.');
+            }
+        }
     }
 
     /** Assemble message and the context information if format provided as an
@@ -237,18 +299,20 @@ class Logger
     }
 
     /**
-     * Writes a line to the log without prepending a status or timestamp
+     * Gets the correctly formatted Date/Time for the log entry.
      *
-     * @param string $message Line to write to the log
-     * @return void
+     * PHP DateTime is dump, and you have to resort to trickery to get microseconds
+     * to work correctly, so here it is.
+     *
+     * @return string
      */
-    public function write($message)
+    private function getTimestamp()
     {
-        if (!is_null($this->fileHandle)) {
-            if (fwrite($this->fileHandle, $message) === false) {
-                throw new RuntimeException('The file could not be written to. Check that appropriate permissions have been set.');
-            }
-        }
+        $originalTime = microtime(true);
+        $micro = sprintf("%06d", ($originalTime - floor($originalTime)) * 1000000);
+        $date = new DateTime(date('Y-m-d H:i:s.' . $micro, $originalTime));
+
+        return $date->format($this->dateFormat);
     }
 
     /** Formats the message for logging.
@@ -271,20 +335,15 @@ class Logger
     }
 
     /**
-     * Gets the correctly formatted Date/Time for the log entry.
+     * Indents the given string with the given indent.
      *
-     * PHP DateTime is dump, and you have to resort to trickery to get microseconds
-     * to work correctly, so here it is.
-     *
+     * @param  string $string The string to indent
+     * @param  string $indent What to use as the indent.
      * @return string
      */
-    private function getTimestamp()
+    private function indent($string, $indent = '    ')
     {
-        $originalTime = microtime(true);
-        $micro = sprintf("%06d", ($originalTime - floor($originalTime)) * 1000000);
-        $date = new DateTime(date('Y-m-d H:i:s.' . $micro, $originalTime));
-
-        return $date->format($this->dateFormat);
+        return $indent . str_replace("\n", "\n" . $indent, $string);
     }
 
     /**
@@ -302,35 +361,29 @@ class Logger
                 '/=>\s+([a-zA-Z])/im',
                 '/array\(\s+\)/im',
                 '/^  |\G  /m',
-                    ), array(
+            ), array(
                 '=> $1',
                 'array()',
                 '    ',
-                    ), str_replace('array (', 'array(', var_export($value, true)));
+            ), str_replace('array (', 'array(', var_export($value, true)));
             $export .= PHP_EOL;
         }
         return str_replace(array('\\\\', '\\\''), array('\\', '\''), rtrim($export));
     }
 
     /**
-     * Indents the given string with the given indent.
+     * Writes a line to the log without prepending a status or timestamp
      *
-     * @param  string $string The string to indent
-     * @param  string $indent What to use as the indent.
-     * @return string
+     * @param string $message Line to write to the log
+     * @return void
      */
-    private function indent($string, $indent = '    ')
+    public function write($message)
     {
-        return $indent . str_replace("\n", "\n" . $indent, $string);
-    }
-
-    /**
-     * @param type $message
-     * @param array $context
-     */
-    public function emergency($message, array $context = array())
-    {
-        $this->log(self::EMERGENCY, $message, $context);
+        if (!is_null($this->fileHandle)) {
+            if (fwrite($this->fileHandle, $message) === false) {
+                throw new RuntimeException('The file could not be written to. Check that appropriate permissions have been set.');
+            }
+        }
     }
 
     /**

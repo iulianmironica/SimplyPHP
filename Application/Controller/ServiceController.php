@@ -2,8 +2,8 @@
 
 namespace Application\Controller;
 
+use Application\Model\ProductModel;
 use Framework\Controller;
-use Application\Library\Helper;
 use Framework\Input;
 
 /**
@@ -19,8 +19,7 @@ class ServiceController extends Controller
 
     public function init()
     {
-        // Raise script time and memory limits
-        Helper::raiseTimeAndMemoryLimits();
+
     }
 
     public function index()

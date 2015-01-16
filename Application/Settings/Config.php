@@ -41,13 +41,14 @@ class Config
         'file' => 'logger.txt', // TODO: default file name
         'timestamp' => 'm-d-Y G:i:s', // leave blank for none
         'format' => '%timestamp% %level% %class% %function% %message%', // output format - leave blank for none
-            /* %timestamp%      - the timestamp declared above
-             * %level%          - level declared above
-             * %class%          - clas name
-             * %function%       - method/function name
-             * %message%        - the message passed as param
-             * %line%, %file%   - point to the parent file that triggered method/function
-             */
+        // 'directory' => APPLICATION_LOG, // path to the log directory - default is APPLICATION_LOG
+        /* %timestamp%      - the timestamp declared above
+         * %level%          - level declared above
+         * %class%          - clas name
+         * %function%       - method/function name
+         * %message%        - the message passed as param
+         * %line%, %file%   - point to the parent file that triggered method/function
+         */
     ];
 
     /* --------------------- View --------------------- */
@@ -60,6 +61,18 @@ class Config
         'enable' => true,
         'cache' => 'Twig', // Cache directory
         'template' => 'Application/View', // Views/templates directory
+    ];
+
+    /** TODO dynamic/database routes.
+     * Bind routes to a database table and check there first.
+     * @var array
+     */
+    public static $routes = [
+        'notFound' => [
+            // Full name space path and class name
+            'controller' => '\Application\Controller\MainController',
+            'action' => 'notfound'
+        ]
     ];
 
     /* --------------------- Namespaces --------------------- */

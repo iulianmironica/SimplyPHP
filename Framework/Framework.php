@@ -11,21 +11,14 @@ require PATH . FRAMEWORK_PATH . 'Autoloader.php';
  * ---------------------------
  * 0.1 Framework, 0.2 Logger, 0.3 Twig
  * 0.4 Linux path fixes
+ * 0.5 Route improvements
  *
- * define('VERSION', '0.4');
+ * define('VERSION', '0.5');
  */
 
 // Initialize the autoloader and set the namespaces of the project
 $autoLoader = new Autoloader();
 $autoLoader->setBasePath(PATH);
-/* Old implementation
-$autoLoader->addNamespace('Framework', '/Framework');
-$autoLoader->addNamespace('Application\Controller', '/Application/Controller');
-$autoLoader->addNamespace('Application\Model', '/Application/Model');
-$autoLoader->addNamespace('Application\Settings', 'Application/Settings');
-$autoLoader->addNamespace('Application\Library', 'Application/Library');
-// $autoLoader->addNamespace('vendor', 'vendor');
-*/
 $autoLoader->addNamespace(str_replace(DS, '\\', FRAMEWORK_PATH), FRAMEWORK_PATH);
 $autoLoader->addNamespace(str_replace(DS, '\\', APPLICATION_CONTROLLER), APPLICATION_CONTROLLER);
 $autoLoader->addNamespace(str_replace(DS, '\\', APPLICATION_MODEL), APPLICATION_MODEL);
@@ -48,12 +41,13 @@ $session = new \Framework\Session();
 
 // TODO: Create a Dispatcher / preDispatch method to be called before initialization of the controller
 // --------------------------------------------------------------------------------------
-// Load the logger with the specified level or the default level
-if (isset(Config::$logger['level'])) {
-    $session->logger = new \Application\Library\KLogger\Logger(APPLICATION_LOG, Config::$logger['level'], Config::$logger);
-} else {
-    $session->logger = new \Application\Library\KLogger\Logger(APPLICATION_LOG, \Application\Library\KLogger\Logger::ALERT, Config::$logger);
-}
+// Load the logger with the specified level or the fallback settings
+$session->logger = new \Application\Library\KLogger\Logger(
+    Config::$logger +
+    [
+        'level' => \Application\Library\KLogger\Logger::ALERT,
+        'directory' => APPLICATION_LOG,
+    ]);
 
 // Load the Input
 $input = new \Framework\Input();
@@ -63,6 +57,16 @@ $router = new \Framework\Router();
 
 // Set the controller, action and the query
 $router->setUriParts();
+
+// Set the not found fallback
+$notFoundFallback = function ($router, $session, $input) {
+    // Todo: check if notFound route is set
+    $notFoundClassName = Config::$routes['notFound']['controller'];
+    $notFoundMethodName = Config::$routes['notFound']['action'];
+    $notFoundController = new $notFoundClassName();
+    $notFoundController->initialize($router, $session, $input, $notFoundController);
+    $notFoundController->{$notFoundMethodName}();
+};
 
 /* TODO:
  * Refactor below
@@ -82,8 +86,14 @@ if (file_exists($pathToController)) {
     if (method_exists($controller, $router->action)) {
         $controller->{$router->action}();
     } else if (!is_dir($pathToController)) {
-        Utility::showNotFoundMessage(" {$router->action} action not found");
+
+        $notFoundFallback($router, $session, $input);
+        // Utility::showNotFoundMessage(" {$router->action} action not found");
     }
 } else if (!is_dir($pathToController)) {
-    Utility::showNotFoundMessage(" {$pathToController} controller not found");
+
+    $notFoundFallback($router, $session, $input);
+    // Utility::showNotFoundMessage(" {$pathToController} controller not found");
+
+
 }

@@ -2,8 +2,8 @@
 
 namespace Application\Controller;
 
-use Framework\Controller;
 use Application\Model\ProductModel;
+use Framework\Controller;
 
 /**
  * Description of MainController
@@ -43,14 +43,21 @@ class MainController extends Controller
         ));
     }
 
-    public function ok()
+    public function twig()
     {
         // self::$logger->info('Enter');
         // $this->twig->render('Main/ok.html.twig', ['name' => 'SimplyPHP']);
 
-        $this->twig->display('Main/ok.html.twig', ['name' => 'SimplyPHP']);
+        $this->twig->display('Main/twig.html.twig', ['name' => 'SimplyPHP']);
 
         // self::$logger->info('Exit');
+    }
+
+    public function notfound()
+    {
+        $this->view->render(array(
+            'content' => 'Main\NotFound'
+        ));
     }
 
 }
