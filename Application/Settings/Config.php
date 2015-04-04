@@ -79,8 +79,9 @@ class Config
 
     /** @var array User defined namespace registration */
     public static $namespaces = [
-            // 'namespace\namespace' => 'path/to/the/directory'
-            // 'Application\Library' => 'Application/Library',
+        // 'namespace\namespace' => 'path/to/the/directory'
+        // 'Application\Library' => 'Application/Library',
+        'IulianMironica\KLogger' => 'vendor/iulianmironica/klogger/src',
     ];
 
     /** @var string Application version */

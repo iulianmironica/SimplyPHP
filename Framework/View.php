@@ -2,7 +2,6 @@
 
 namespace Framework;
 
-use Framework\Utility;
 use Application\Settings\Config;
 
 /**

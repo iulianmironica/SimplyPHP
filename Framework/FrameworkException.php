@@ -7,18 +7,19 @@ namespace Framework;
  *
  * @author iulian.mironica
  */
-class Exception extends Exception
+class FrameworkException extends \Exception
 {
 
+    // TODO
     public function __construct($message, $code, $previous)
     {
         parent::__construct($message, $code, $previous);
     }
 
     const logTypeSystem = 0,
-            logTypeEmail = 1,
-            logTypeFile = 3,
-            logTypeSAPI = 4;
+        logTypeEmail = 1,
+        logTypeFile = 3,
+        logTypeSAPI = 4;
 
     public function logError($message = '', $type = self::logTypeSystem, $recipient = '')
     {

@@ -42,10 +42,10 @@ $session = new \Framework\Session();
 // TODO: Create a Dispatcher / preDispatch method to be called before initialization of the controller
 // --------------------------------------------------------------------------------------
 // Load the logger with the specified level or the fallback settings
-$session->logger = new \Application\Library\KLogger\Logger(
+$session->logger = new \IulianMironica\KLogger\Logger(
     Config::$logger +
     [
-        'level' => \Application\Library\KLogger\Logger::ALERT,
+        'level' => \IulianMironica\KLogger\Logger::ALERT,
         'directory' => APPLICATION_LOG,
     ]);
 
@@ -88,12 +88,9 @@ if (file_exists($pathToController)) {
     } else if (!is_dir($pathToController)) {
 
         $notFoundFallback($router, $session, $input);
-        // Utility::showNotFoundMessage(" {$router->action} action not found");
     }
 } else if (!is_dir($pathToController)) {
 
     $notFoundFallback($router, $session, $input);
-    // Utility::showNotFoundMessage(" {$pathToController} controller not found");
-
 
 }

@@ -3,8 +3,7 @@
 namespace Application\Library;
 
 require_once PATH . VENDOR_PATH . 'autoload.php';
-
-// require_once PATH . VENDOR_PATH . 'twig\twig\lib\Twig\Autoloader.php';
+require_once PATH . VENDOR_PATH . 'twig\twig\lib\Twig\Autoloader.php';
 
 use Application\Settings\Config;
 
@@ -15,6 +14,8 @@ class Twig
 
     public function __construct($debug = false)
     {
+        \Twig_Autoloader::register();
+
         $loader = new \Twig_Loader_Filesystem(PATH . APPLICATION_VIEW);
         $this->twig = new \Twig_Environment($loader, array(
             'cache' => APPLICATION_CACHE . Config::$twig['cache'],

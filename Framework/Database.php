@@ -3,7 +3,6 @@
 namespace Framework;
 
 use Application\Settings\Config;
-use Framework\Utility;
 
 /**
  * Description of Database

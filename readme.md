@@ -15,7 +15,7 @@ Doctrine DBAL a Database Abstraction Layer over PHP's PDO -
 http://docs.doctrine-project.org/projects/doctrine-dbal/en/latest/
 
 KLogger A simple and improved version of Klogger, a PSR-3 compliant logging class -
-https://github.com/katzgrau/KLogger
+https://github.com/iulianmironica/KLogger
 
 It will be available trough composer.
 https://getcomposer.org/

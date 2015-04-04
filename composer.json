@@ -1,7 +1,7 @@
 {
     "name": "iulianmironica/simplyphp",
-    "description": "SimplyPHP Framework",
-    "keywords": ["framework", "simplyPHP"],
+    "description": "SimplyPHP a simple PHP micro framework.",
+    "keywords": ["PHP framework", "SimplyPHP", "PHP micro framework"],
     "license": "CC BY-SA",
     "authors": [
         {
@@ -12,6 +12,7 @@
     "require": {
         "php": ">=5.4",
         "twig/twig": "1.*",
-        "doctrine/dbal": ">=2.4.0"
+        "doctrine/dbal": ">=2.4.0",
+        "iulianmironica/klogger": "dev-master"
     }
 }

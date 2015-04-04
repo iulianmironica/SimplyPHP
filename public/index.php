@@ -6,7 +6,7 @@ $frameworkPath = 'Framework';
 $applicationPath = 'Application';
 $vendorPath = 'vendor';
 
-define('ENVIRONMENT', 'development');
+defined('ENVIRONMENT') || define('ENVIRONMENT', (getenv('ENVIRONMENT') ? getenv('ENVIRONMENT') : 'development'));
 
 define('PATH', realpath(dirname(dirname(__FILE__))) . DS);
 define('FRAMEWORK_PATH', $frameworkPath . DS);
