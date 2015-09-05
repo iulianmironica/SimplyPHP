@@ -2,8 +2,7 @@
 
 namespace Application\Library;
 
-require_once PATH . VENDOR_PATH . 'autoload.php';
-require_once PATH . VENDOR_PATH . 'twig\twig\lib\Twig\Autoloader.php';
+require_once PATH . VENDOR_PATH . 'twig/twig/lib/Twig/Autoloader.php';
 
 use Application\Settings\Config;
 
@@ -11,6 +10,7 @@ class Twig
 {
 
     private $twig;
+    public $data = [];
 
     public function __construct($debug = false)
     {
@@ -26,8 +26,20 @@ class Twig
         $this->addBaseUrl('baseUrl');
         // Add queryString method
         $this->twig->addFunction('cteQueryString', new \Twig_SimpleFunction('cteQueryString', function ($newParams) {
-            return http_build_query(array_merge($newParams));
+            return http_build_query($newParams);
         }));
+
+        // Debug extension - only in development mode
+        if ($debug) {
+            $this->twig->addExtension(new \Twig_Extension_Debug());
+        }
+
+        // Set timezone
+        if (!empty(Config::DEFAULT_TIMEZONE)) {
+            $this->twig->getExtension('core')->setTimezone(Config::DEFAULT_TIMEZONE);
+            // $this->twig->addExtension(new \Twig_Extensions_Extension_Intl());
+        }
+
     }
 
     public function addBaseUrl($name)
@@ -40,7 +52,7 @@ class Twig
     public function render($template, array $data = [])
     {
         $frameworkData = $this->getFrameworkData();
-        return $this->twig->render($template, $data + $frameworkData);
+        return $this->twig->render($template, $this->data + $data + $frameworkData);
     }
 
     public function getFrameworkData()
@@ -57,7 +69,7 @@ class Twig
     public function display($template, array $data = [])
     {
         $frameworkData = $this->getFrameworkData();
-        $this->twig->display($template, $data + $frameworkData);
+        $this->twig->display($template, $this->data + $data + $frameworkData);
     }
 
     /*

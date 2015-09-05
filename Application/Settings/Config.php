@@ -58,20 +58,41 @@ class Config
 
     /** @var array Templating settings with Twig */
     public static $twig = [
-        'enable' => true,
+        'enable' => false,
         'cache' => 'Twig', // Cache directory
         'template' => 'Application/View', // Views/templates directory
     ];
 
-    /** TODO dynamic/database routes.
-     * Bind routes to a database table and check there first.
-     * @var array
-     */
+    /* --------------------- Routes --------------------- */
+
+    /** @var array */
     public static $routes = [
-        'notFound' => [
+        // Not found page
+        '404' => [
             // Full name space path and class name
             'controller' => '\Application\Controller\MainController',
             'action' => 'notfound'
+        ],
+        'list' => [
+            // slug => [controller, action]
+        ],
+        // Database routes - uses the default driver
+        'database' => [
+            'enable' => false,
+            'session' => [
+                // Allow db routes to be saved on session
+                'enable' => true,
+                // expiration time
+                'expire' => 1200
+            ],
+            'columns' => [
+                // Pass the column name as value
+                'id' => 'id',
+                'slug' => 'slug',
+                'controller' => 'controller',
+            ],
+            // Table name
+            'table' => 'route'
         ]
     ];
 
@@ -84,7 +105,10 @@ class Config
         'IulianMironica\KLogger' => 'vendor/iulianmironica/klogger/src',
     ];
 
+    /* --------------------- Other --------------------- */
+    const DEFAULT_TIMEZONE = 'Europe/Bucharest';
+
     /** @var string Application version */
-    const version = '1.0';
+    const version = '0.0.6';
 
 }

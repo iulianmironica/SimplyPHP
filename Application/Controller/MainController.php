@@ -29,9 +29,9 @@ class MainController extends Controller
     {
         $productModel = new ProductModel();
         $categoriesAndProducts = $productModel->getProducts();
-
+        
         $this->view->render(array(
-            'content' => 'Main\Main',
+            'content' => 'Main/Main',
             'categoriesAndProducts' => $categoriesAndProducts,
         ));
     }
@@ -39,7 +39,7 @@ class MainController extends Controller
     public function about()
     {
         $this->view->render(array(
-            'content' => 'Main\About'
+            'content' => 'Main/About'
         ));
     }
 
@@ -47,6 +47,8 @@ class MainController extends Controller
     {
         // self::$logger->info('Enter');
         // $this->twig->render('Main/ok.html.twig', ['name' => 'SimplyPHP']);
+
+        // TODO: first enable Twig in Config.php
 
         $this->twig->display('Main/twig.html.twig', ['name' => 'SimplyPHP']);
 
@@ -56,7 +58,7 @@ class MainController extends Controller
     public function notfound()
     {
         $this->view->render(array(
-            'content' => 'Main\NotFound'
+            'content' => 'Main/NotFound'
         ));
     }
 

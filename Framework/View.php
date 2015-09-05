@@ -100,11 +100,6 @@ class View
         return Utility::baseUrl($url);
     }
 
-    public function __set($name, $value)
-    {
-        $this->variables[$name] = $value;
-    }
-
     public function __get($name)
     {
         if (isset($this->variables[$name])) {
@@ -112,6 +107,11 @@ class View
         } else {
             return null;
         }
+    }
+
+    public function __set($name, $value)
+    {
+        $this->variables[$name] = $value;
     }
 
     public function __isset($name)

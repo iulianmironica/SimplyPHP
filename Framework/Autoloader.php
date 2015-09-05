@@ -50,6 +50,7 @@ namespace Framework;
 class Autoloader
 {
 
+    protected $prefixes = array();
     /**
      * An associative array where the key is a namespace prefix and the value
      * is an array of base directories for classes in that namespace.
@@ -57,7 +58,6 @@ class Autoloader
      * @var array
      */
     private $basePath = '';
-    protected $prefixes = array();
 
     /**
      * Register loader with SPL autoloader stack.
@@ -76,6 +76,19 @@ class Autoloader
     public function setBasePath($basePath)
     {
         $this->basePath = $basePath;
+    }
+
+    /** Add multiple namespaces at once from an array.
+     *
+     * @param array $namespaces
+     */
+    public function addNamespaces(array $namespaces = array())
+    {
+        if (!empty($namespaces)) {
+            foreach ($namespaces as $prefix => $directory) {
+                $this->addNamespace($prefix, $directory);
+            }
+        }
     }
 
     /**
@@ -111,19 +124,6 @@ class Autoloader
             array_unshift($this->prefixes[$prefix], $base_dir);
         } else {
             array_push($this->prefixes[$prefix], $base_dir);
-        }
-    }
-
-    /** Add multiple namespaces at once from an array.
-     *
-     * @param array $namespaces
-     */
-    public function addNamespaces(array $namespaces = array())
-    {
-        if (!empty($namespaces)) {
-            foreach ($namespaces as $prefix => $directory) {
-                $this->addNamespace($prefix, $directory);
-            }
         }
     }
 

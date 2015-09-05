@@ -6,16 +6,6 @@ use Application\Settings\Config;
 
 require PATH . FRAMEWORK_PATH . 'Autoloader.php';
 
-/* TODO: create a method and put this.
- * SimplyPHP Framework version
- * ---------------------------
- * 0.1 Framework, 0.2 Logger, 0.3 Twig
- * 0.4 Linux path fixes
- * 0.5 Route improvements
- *
- * define('VERSION', '0.5');
- */
-
 // Initialize the autoloader and set the namespaces of the project
 $autoLoader = new Autoloader();
 $autoLoader->setBasePath(PATH);
@@ -32,15 +22,21 @@ if (isset(Config::$doctrine['enable']) && Config::$doctrine['enable'] === true) 
 }
 
 // Set user defined namespaces
-if (isset(Config::$namespaces) && !empty(Config::$namespaces)) {
+if (!empty(Config::$namespaces)) {
     $autoLoader->addNamespaces(Config::$namespaces);
 }
 
 // Load and start the Session
 $session = new \Framework\Session();
 
+// TODO:
+/*public static $hooks = [
+    'enable' => true,
+    // 'before' => '\Application\Controller\GoController',
+    'after' => ['Application\Utility\Session', 'test'],
+];*/
 // TODO: Create a Dispatcher / preDispatch method to be called before initialization of the controller
-// --------------------------------------------------------------------------------------
+
 // Load the logger with the specified level or the fallback settings
 $session->logger = new \IulianMironica\KLogger\Logger(
     Config::$logger +
@@ -52,7 +48,7 @@ $session->logger = new \IulianMironica\KLogger\Logger(
 // Load the Input
 $input = new \Framework\Input();
 
-// Load and the Router and prepair the URI
+// Load and the Router and prepare the URI
 $router = new \Framework\Router();
 
 // Set the controller, action and the query
@@ -60,9 +56,13 @@ $router->setUriParts();
 
 // Set the not found fallback
 $notFoundFallback = function ($router, $session, $input) {
-    // Todo: check if notFound route is set
-    $notFoundClassName = Config::$routes['notFound']['controller'];
-    $notFoundMethodName = Config::$routes['notFound']['action'];
+
+    $notFoundClassName = Config::$routes['404']['controller'];
+    $notFoundMethodName = Config::$routes['404']['action'];
+
+    if (empty($notFoundClassName) OR empty($notFoundMethodName)) {
+        Utility::showError('"Not found" controller and action not set.');
+    }
     $notFoundController = new $notFoundClassName();
     $notFoundController->initialize($router, $session, $input, $notFoundController);
     $notFoundController->{$notFoundMethodName}();
@@ -92,5 +92,4 @@ if (file_exists($pathToController)) {
 } else if (!is_dir($pathToController)) {
 
     $notFoundFallback($router, $session, $input);
-
 }

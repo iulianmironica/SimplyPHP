@@ -10,12 +10,17 @@ namespace Framework;
 abstract class Controller
 {
 
+    public static $instance;
     public $session;
     public $router;
     public $input;
     public $view;
     public $twig;
-    public static $instance;
+
+    public static function &getInstance()
+    {
+        return self::$instance;
+    }
 
     abstract function index();
 
@@ -24,7 +29,7 @@ abstract class Controller
      *
      * @param \Framework\Router $router
      * @param \Framework\Session $session
-     * @param type $controller
+     * @param \Framework\Controller $controller
      */
     public function initialize(Router $router, Session $session, Input $input, $controller)
     {
@@ -33,13 +38,6 @@ abstract class Controller
         $this->input = $input;
 
         self::$instance = &$this;
-
-        $this->view = new View($router, $session);
-
-        // Execute the init method from the accessed controller
-        if (method_exists($controller, 'init')) {
-            $controller->init();
-        }
 
         // Init Twig if enabled
         if (isset(\Application\Settings\Config::$twig['enable']) && \Application\Settings\Config::$twig['enable'] === true) {
@@ -50,12 +48,21 @@ abstract class Controller
             }
 
             $this->twig = new \Application\Library\Twig($debug);
+        } else {
+            $this->view = new View($router, $session);
         }
-    }
 
-    public static function &getInstance()
-    {
-        return self::$instance;
+        // TODO:
+        /*if (!empty(\Application\Settings\Config::$hooks['enable'])) {
+            if (!empty(\Application\Settings\Config::$hooks['after'])) {
+                call_user_func(\Application\Settings\Config::$hooks['after']);
+            }
+        }*/
+
+        // Execute the init method from the accessed controller
+        if (method_exists($controller, 'init')) {
+            $controller->init();
+        }
     }
 
     /** Redirects to a local or external url.

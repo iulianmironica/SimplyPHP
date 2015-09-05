@@ -106,5 +106,4 @@ class Utility
             return $uri;
         }
     }
-
 }

@@ -2,8 +2,9 @@
 
 namespace Framework;
 
-use Framework\Database;
 use Application\Settings\Config;
+
+//use Application\Library\Doctrine;
 
 /**
  * Description of Model
@@ -21,6 +22,7 @@ class Model
     {
         if (isset(Config::$doctrine['enable']) && Config::$doctrine['enable'] === true) {
             $this->doctrine = \Application\Library\Doctrine::connect();
+            $this->pdo = $this->doctrine;
         } else {
             $this->pdo = Database::init();
         }
@@ -50,7 +52,7 @@ class Model
 
 
             if (!empty($orderBy)) {
-                $sql.= " ORDER BY {$orderBy} ";
+                $sql .= " ORDER BY {$orderBy} ";
             }
 
             $results = $this->pdo->prepare($sql);
@@ -79,11 +81,19 @@ class Model
 
         $sql = "SELECT {$columns}
                 FROM {$tableName}
-                LIMIT {$limit} ";
+                ";
 
         if (!empty($orderBy)) {
-            $sql.= " ORDER BY {$orderBy} ";
+            $sql .= " ORDER BY {$orderBy} ";
         }
+
+        if ($limit) {
+            $sql .= " LIMIT {$limit} ";
+        }
+
+        /*var_dump($sql);
+        exit();*/
+
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute();
         return $stmt->fetchAll();
@@ -101,7 +111,7 @@ class Model
     {
         try {
             $stmt = $this->pdo->prepare($sql);
-            $stmt->execute($parameters ? : $parameters);
+            $stmt->execute($parameters ?: $parameters);
 
             // var_dump($stmt);
             // var_dump($stmt->fetchAll($fetchMode));
