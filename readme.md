@@ -206,7 +206,7 @@ They can be disabled/enabled in <code>/Application/Settings/Config.php</code>
 
 ### Create your Model class in <code>/Application/Model</code>
 
-```
+```php
 
     <?php
     namespace Application\Model;
@@ -247,7 +247,7 @@ Create a <code>Layout.html.twig</code> file in <code>/Application/View</code>:
         That's my name: {{ name }}
         
     {% endblock %}
-``
+```
 
 Then create a <code>twig.html.twig</code> in <code>/Application/View/Main/</code>
 
@@ -306,7 +306,7 @@ Navigating to <code>http://simplyphp.local/main/twig</code> should display your 
 
 ```php
    
-    <p> <?= $this->someVarName ?>
+    <p> <?= $this->someVarName ?> </p>
 ```    
 
 <code>/Application/Controller/MainController.php</code>:
