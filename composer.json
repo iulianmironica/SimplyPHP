@@ -1,18 +1,24 @@
 {
-    "name": "iulianmironica/simplyphp",
-    "description": "SimplyPHP a simple PHP micro framework.",
-    "keywords": ["PHP framework", "SimplyPHP", "PHP micro framework"],
-    "license": "CC BY-SA",
-    "authors": [
-        {
-            "name": "Iulian Mironica",
-            "email": "iulian.mironica@gmail.com"
-        }
-    ],
-    "require": {
-        "php": ">=5.4",
-        "twig/twig": "1.*",
-        "doctrine/dbal": ">=2.4.0",
-        "iulianmironica/klogger": "dev-master"
+  "name": "iulianmironica/simplyphp-framework",
+  "description": "SimplyPHP a simple PHP micro framework. MVC, namespaced, loading on demand, lightweight.",
+  "keywords": [
+    "PHP framework",
+    "SimplyPHP",
+    "PHP micro framework"
+  ],
+  "homepage": "https://github.com/iulianmironica/SimplyPHP",
+  "license": "CC BY-SA",
+  "authors": [
+    {
+      "name": "Iulian Mironica",
+      "email": "admin@iulianmironica.ro",
+      "homepage": "http://iulianmironica.ro"
     }
+  ],
+  "require": {
+    "php": ">=5.4",
+    "twig/twig": "1.*",
+    "doctrine/dbal": ">=2.4.0",
+    "iulianmironica/klogger": "dev-master"
+  }
 }
