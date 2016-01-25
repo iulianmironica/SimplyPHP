@@ -37,6 +37,7 @@ $session = new \Framework\Session();
 ];*/
 // TODO: Create a Dispatcher / preDispatch method to be called before initialization of the controller
 
+// TODO: allow disable of KLogger
 // Load the logger with the specified level or the fallback settings
 $session->logger = new \IulianMironica\KLogger\Logger(
     Config::$logger +

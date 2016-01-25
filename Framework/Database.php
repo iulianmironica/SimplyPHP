@@ -17,7 +17,7 @@ class Database
     public static function init()
     {
         if (self::$resource instanceof \PDO) {
-            echo '<br> New resource';
+            // New resource
             try {
                 // The connection has not been init connect
                 $dsn = Config::DATABASE_TYPE . ':host=' . Config::DATABASE_HOST . ';dbname=' . Config::DATABASE_NAME . ';charset=utf8';
@@ -28,11 +28,10 @@ class Database
                 self::$resource->setAttribute(\PDO::ATTR_DEFAULT_FETCH_MODE, \PDO::FETCH_OBJ);
                 self::$resource->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
             } catch (\PDOException $e) {
-                Utility::showError('Database error ocurred. Please check the credentials and/or the connection.', $e);
+                Utility::showError('Database error occurred. Please check the credentials and/or the connection.', $e);
             }
             return self::$resource;
         } else {
-            echo '<br> Same resource';
             // Return the same resource
             return self::$resource;
         }

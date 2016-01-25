@@ -18,7 +18,7 @@ class Utility
      */
     public static function getPhpFilePath($file, $location = APPLICATION_CONTROLLER, $extension = '.php')
     {
-        // The file might be a subfolder, return it as it is
+        // The file might be a sub folder, return it as it is
         if (strstr($file, DS)) {
             return PATH . $location . $file . $extension;
         }
@@ -27,8 +27,8 @@ class Utility
     }
 
     /**
-     * @param string $fileName
-     * @param string $concatenation
+     * @param $fileName
+     * @param bool $concatenation
      * @return string
      */
     public static function prepairFileName($fileName, $concatenation = false)
@@ -36,7 +36,7 @@ class Utility
         if (!empty($concatenation)) {
             return ucfirst(strtolower(trim($fileName))) . $concatenation;
         } else {
-            // TODO refactor
+
             $fileName = trim($fileName);
             // This will return 3 matches, whole string the file and the
             // concatenation if it has an uppercase word, false otherwise
@@ -49,11 +49,12 @@ class Utility
     }
 
     /**
-     * @param type $message
-     * @param type $data
+     * @param $message
+     * @param null $data
      */
     public static function showError($message, $data = null)
     {
+        // TODO:
         var_dump($message);
         var_dump($data);
         die();
@@ -64,7 +65,7 @@ class Utility
         die($message);
     }
 
-    /** TODO: Refactor.
+    /**
      * Redirects to a local or external url.
      *
      * @param string $uri
@@ -79,7 +80,6 @@ class Utility
         }
 
         // Allow resources to work with flexible protocol
-        // if (!preg_match('#^(https?|s?ftp)://#i', $uri)) {
         if (!preg_match('#^((https?:{1}|s?ftp:{1})|\/\/)#i', $uri)) {
             $uri = self::baseUrl($uri);
         }

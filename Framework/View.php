@@ -55,10 +55,10 @@ class View
     }
 
     /**
-     * @param type $variables
-     * @param type $layout
-     * @param type $return
-     * @return type
+     * @param null $variables
+     * @param null $layout
+     * @param bool $return
+     * @return string
      */
     public function render($variables = null, $layout = null, $return = false)
     {

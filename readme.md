@@ -1,20 +1,30 @@
 # SimplyPHP Framework
 ### A simple and lightweight PHP framework. MVC, Object Oriented and really easy to use.
 
+SimplyPHP is a skeleton Framework and provides basic functionality to start an app. I wanted a simple architecture and  
+a light framework and also because I wanted to learn more I wrote SimplyPHP.
+
 * MVC
 * Fully namespaced
 * Uses loading on demand
 * It Requires 5.5 or higher
+* Dynamic (db) and static routing
+* Basic input filtering
 
 ## It works with:
 * [Twig templating engine](http://twig.sensiolabs.org/documentation)
 * [Doctrine DBAL a Database Abstraction Layer over PHP's PDO](http://docs.doctrine-project.org/projects/doctrine-dbal/en/latest/)
-* [KLogger A simple and improved version of Klogger, a PSR-3 compliant logging class](https://github.com/iulianmironica/KLogger)
+* [KLogger A simple and improved version of Klogger, a PSR-3 compliant logging class](https://github.com/iulianmironica/KLogger) **required**
 
-## Documentation
+## Let's make it better!
+* If you have improvement ideas or time to develop I'm open to feedback and wiling to accept your pull requests.
+* [PSR](http://www.php-fig.org/psr/psr-1/) is the direction I want to follow.
+
+## Documentation (detailed documentation is yet to come)
 
 ## 1. Download [SimplyPHP Framework](https://github.com/iulianmironica/SimplyPHP)
 * Unzip the archive
+* run: <code>composer update</code> (or install [Composer](https://getcomposer.org/)) to fetch the dependencies
 
 ## 2. Create your <code>.htaccess</code> <small>(Apache Environment)</small>
 ```apache  
@@ -324,7 +334,55 @@ Navigating to <code>http://simplyphp.local/main/twig</code> should display your 
 
 Navigating to <code>http://simplyphp.local/main/about</code> should display your result.
 
+### Input
+To access GET OR POST variable <code>?yo=123</code>  
+Inside your controller just do:  
 
+```php   
+
+    // 123
+    $this->input->yo
+    
+    // Or statically
+    use Framework\Input;
+    
+    // Fetch GET variable 'yo' statically
+    Input::get('yo');
+    
+    // Fetch POST variable 'yo' statically
+    Input::post('yo');
+```
+ 
+### Request
+Get the HTTP request verb  
+
+```php   
+
+    // Get the HTTP request verb
+    $this->router->getRequest(); // 'POST'
+```
+
+Get the second segment **index** from url <code>http://simplyphp.local/service/index/yo</code>  
+
+```php  
+
+    // http://simplyphp.local/service/index/yo
+    $this->router->getUriSegment(2) // 'index'
+```
+ 
+### Session
+Get the contents of a session variable
+  
+```php   
+
+    // Set content of basket variable on session
+    $this->session->basket = ['product1', 'product2']
+     
+    // Get content of basket variable from session
+    $this->session->basket; 
+```
+
+### Detailed documentation is yet to come...
 
 ### SimplyPHP is distributed with [CC BY-SA](http://creativecommons.org/licenses/by-sa/4.0/)
 **Share** — copy and redistribute the material in any medium or format  

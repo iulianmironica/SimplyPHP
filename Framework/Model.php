@@ -4,7 +4,6 @@ namespace Framework;
 
 use Application\Settings\Config;
 
-//use Application\Library\Doctrine;
 
 /**
  * Description of Model
@@ -29,12 +28,12 @@ class Model
     }
 
     /**
-     * @param type $id
-     * @param type $tableName
-     * @param type $idColumnName
-     * @param type $columns
-     * @param type $orderBy
-     * @return type
+     * @param $id
+     * @param $tableName
+     * @param string $idColumnName
+     * @param null $columns
+     * @param null $orderBy
+     * @return bool|mixed
      */
     public function getById($id, $tableName, $idColumnName = 'id', $columns = null, $orderBy = null)
     {
@@ -50,7 +49,6 @@ class Model
                 FROM {$tableName}
                 WHERE {$idColumnName} = {$id} ";
 
-
             if (!empty($orderBy)) {
                 $sql .= " ORDER BY {$orderBy} ";
             }
@@ -65,11 +63,11 @@ class Model
     }
 
     /**
-     * @param type $tableName
-     * @param type $columns
-     * @param type $orderBy
-     * @param type $limit
-     * @return type
+     * @param $tableName
+     * @param null $columns
+     * @param null $orderBy
+     * @param int $limit
+     * @return array
      */
     public function getAll($tableName, $columns = null, $orderBy = null, $limit = 100)
     {
@@ -91,31 +89,23 @@ class Model
             $sql .= " LIMIT {$limit} ";
         }
 
-        /*var_dump($sql);
-        exit();*/
-
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute();
         return $stmt->fetchAll();
     }
 
     /**
-     *
-     * @param type $sql
-     * @param type $parameters
-     * @param type $fetchMode
-     * @param type $fetchAll = true
-     * @return null
+     * @param $sql
+     * @param null $parameters
+     * @param int $fetchMode
+     * @param bool $fetchAll
+     * @return array|bool|mixed
      */
     public function query($sql, $parameters = null, $fetchMode = \PDO::FETCH_ASSOC, $fetchAll = true)
     {
         try {
             $stmt = $this->pdo->prepare($sql);
             $stmt->execute($parameters ?: $parameters);
-
-            // var_dump($stmt);
-            // var_dump($stmt->fetchAll($fetchMode));
-            //exit();
 
             if ($fetchAll) {
                 return $stmt->fetchAll($fetchMode);

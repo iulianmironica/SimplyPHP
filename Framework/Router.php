@@ -20,7 +20,6 @@ class Router
 
     public function __construct()
     {
-        // $this->uri = filter_input(INPUT_SERVER, 'QUERY_STRING', FILTER_SANITIZE_STRING)?: '';
         $this->uri = filter_input(INPUT_SERVER, 'REQUEST_URI');
     }
 
@@ -38,8 +37,6 @@ class Router
                 'static' => [],
                 'dynamic' => [],
             ];
-            /*$query = end($parts);
-            $this->query = strpos($query, '?', 0) === 0 ? ltrim($query, '?') : null;*/
 
             $session = new Session();
 
@@ -101,8 +98,6 @@ class Router
                     }
                 }
 
-                // $routes = array_merge($routes, Config::$routes['list']);
-
                 // Set session data
                 $session->framework = (object)['routes' => $routes];
             }
@@ -162,9 +157,6 @@ class Router
         if (!isset($parts[0]) OR empty($parts[0]) OR (strpos($parts[0], '?', 0) === 0)) {
             $this->controller = Utility::prepairFileName(Config::DEFAULT_CONTROLLER, 'Controller');
             $this->action = strtolower(Config::DEFAULT_ACTION);
-            /*if (isset($parts[0]) AND strpos($parts[0], '?', 0) === 0) {
-                $this->query = ltrim($parts[0], '?');
-            }*/
             return;
         }
 
@@ -183,9 +175,6 @@ class Router
                 $this->action = strtolower(Config::DEFAULT_ACTION);
             }
 
-            /*if (isset($parts[3]) AND !empty($parts[3])) {
-                $this->query = array_slice($parts, 3);
-            }*/
         } else {
             $this->controller = Utility::prepairFileName($parts[0], 'Controller');
 
@@ -193,9 +182,6 @@ class Router
                 $this->action = strtolower($parts[1]);
             }
 
-            /*if (isset($parts[2]) AND !empty($parts[2])) {
-                $this->query = array_slice($parts, 2);
-            }*/
         }
     }
 
@@ -211,15 +197,6 @@ class Router
             // Set the query
             $this->query = ltrim(stristr($this->uri, '?'), '?');
         }
-
-        /*if (!empty($uriParts) && preg_match("/(.*?)(\?.*)/", end($uriParts), $query)) {
-            // Pop the last element from array
-            unset($uriParts[count($uriParts) - 1]);
-            $uriParts = array_merge($uriParts, array(
-                $query[1], // Contains the action
-                $query[2], // Contains the ?query
-            ));
-        }*/
 
         // Remove the empty values
         $keysPreserved = array_filter($uriParts);

@@ -1,4 +1,6 @@
 <?php
+$startTime = microtime(true);
+
 define('DS', DIRECTORY_SEPARATOR);
 
 // Use DS for subdirectories

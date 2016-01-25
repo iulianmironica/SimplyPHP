@@ -11,8 +11,9 @@ class Input
 {
 
     /**
-     * @param type $item
-     * @return type
+     * @param null $item
+     * @param int $filter
+     * @return mixed
      */
     public static function post($item = null, $filter = FILTER_DEFAULT)
     {
@@ -52,6 +53,4 @@ class Input
             return null;
         }
     }
-
-    // TODO: READ ABOUT MODEL BINDING
 }

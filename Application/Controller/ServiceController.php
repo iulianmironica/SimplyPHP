@@ -26,8 +26,8 @@ class ServiceController extends Controller
     {
         if ($this->router->getRequest() === 'GET') {
 
-            $start = microtime(true);
-            echo "Completed in ", microtime(true) - $start, " seconds" . PHP_EOL;
+            global $start;
+            echo "Completed in ", microtime(true) - $start, " seconds." . PHP_EOL;
         }
     }
 
